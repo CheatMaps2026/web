@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 
 function ObservationsListPage() {
     const [observations, setObservations] = useState([]);
