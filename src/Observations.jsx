@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import './Observations.css';
 import Map from "./Map";
+import {useApiClient} from "./providers/ApiClientProvider";
 
 function Observations() {
     const [observations, setObservations] = useState({ "Items": [] });
-
+    const apiClient = useApiClient()
+    console.log(apiClient.getBaseUrl())
     const [verificationRating, setVerificationRating] = useState('1'); // 1 for default rating.
 
     const [message, setMessage] = useState('');
