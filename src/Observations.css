@@ -1,0 +1,70 @@
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    width: 5vw;
+    overflow-wrap: break-word;
+}
+.flex-container > * {
+    margin: 0em 1em;
+}
+.map-container {
+    width: 500px;
+    margin-left: 20px;
+  }
+  
+.app-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+    width: 50vw;
+}
+.details-container > * {
+    margin: 0.5em 0em;
+}
+
+.details {
+    display: inline-block;
+    word-break: break-word;
+}
+
+.observation-image {
+    height: 90vh;
+}
+.button-group {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+.button-group > * {
+    margin: 0em 0.5em;
+}
+
+.btn {
+    color: white;
+    font-size: 16px;
+}
+
+.not-cheatgrass {
+    background-color: #f44336; 
+    color: white; 
+}
+
+.maybe-cheatgrass {
+    background-color: #ffeb3b; 
+    color: black; 
+}
+
+.cheatgrass {  
+    background-color: #4CAF50; 
+    color: white; 
+}
+
+.selected-rating {
+    border: 2px solid black;
+}

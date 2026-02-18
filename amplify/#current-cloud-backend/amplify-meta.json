@@ -1,0 +1,65 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-habitatwebtest-staging-e39da-authRole",
+      "UnauthRoleArn": "arn:aws:iam::124008505402:role/amplify-habitatwebtest-staging-e39da-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::124008505402:role/amplify-habitatwebtest-staging-e39da-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-habitatwebtest-staging-e39da-deployment",
+      "UnauthRoleName": "amplify-habitatwebtest-staging-e39da-unauthRole",
+      "StackName": "amplify-habitatwebtest-staging-e39da",
+      "StackId": "arn:aws:cloudformation:us-east-1:124008505402:stack/amplify-habitatwebtest-staging-e39da/e0ce4250-f767-11ee-980c-126b1dc13ae9",
+      "AmplifyAppId": "d34rg5325lipg9"
+    }
+  },
+  "auth": {
+    "HabitatWebTest": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ],
+          "passwordPolicyMinLength": 12
+        },
+        "signupAttributes": [],
+        "socialProviders": [
+          "GOOGLE"
+        ],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-east-1_3751p04yp",
+        "AppClientIDWeb": "e9mge30gpk2obr4adak1uoipi",
+        "AppClientID": "3p5e3pl2jfkrcd6dp7flbr1n41",
+        "HostedUIDomain": "vj81dr6nxn6s-staging",
+        "IdentityPoolId": "us-east-1:8abeda44-fe7a-4a9e-b838-43d31e087247",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:124008505402:userpool/us-east-1_3751p04yp",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://google.com\"],\"LogoutURLs\":[\"https://google.com\"]}",
+        "UserPoolName": "HabitatWebTest"
+      },
+      "lastPushTimeStamp": "2024-04-24T18:44:54.544Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-habitatwebtest-staging-e39da-deployment/amplify-cfn-templates/auth/HabitatWebTest-cloudformation-template.json",
+        "logicalId": "authHabitatWebTest"
+      },
+      "lastPushDirHash": "ldXzZb52VwmGd5vUvm2mITnSNs4="
+    }
+  }
+}
