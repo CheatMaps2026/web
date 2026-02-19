@@ -1,14 +1,19 @@
 import {Observation} from "../model/observations";
 
-export class FilterService {
-    private observationsExist: boolean = this.observations.length > 0
+export type ObservationFilters = {
+    start?: Date;
+    end?: Date;
+    verificationRating?: number;
+    estimatedArea?: number;
+    percentCoverage?: number;
+}
 
+export class FilterService {
     constructor(private observations: Observation[]) {
     }
 
     //if end is not undefined or null, filter everything after from
     byDateRange(start: Date, end?: Date): Observation[] {
-        if (!this.observationsExist) return [];
         if (!end) {
             return this.observations.filter((observation) => observation.timestamp >= start.getTime())
         }
@@ -28,6 +33,27 @@ export class FilterService {
 
     byPercentCoverage(percentQuery: number) {
         return this.observations.filter((observation) => observation.percentCoverage == percentQuery)
+    }
+
+    apply(filters: ObservationFilters) {
+
+        if (filters.start || filters.end) {
+            this.observations = this.byDateRange(filters.start!, filters.end)
+        }
+
+        if (filters.verificationRating !== undefined) {
+            this.observations = this.byVerificationStatus(filters.verificationRating)
+        }
+
+        if (filters.estimatedArea !== undefined) {
+            this.observations = this.byEstimatedArea(filters.estimatedArea)
+        }
+
+        if (filters.percentCoverage !== undefined) {
+            this.observations = this.byPercentCoverage(filters.percentCoverage)
+        }
+
+        return this.observations
     }
 }
 
