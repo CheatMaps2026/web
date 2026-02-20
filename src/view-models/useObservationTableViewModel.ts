@@ -14,7 +14,6 @@ const defaultExportType: ExportType = "CSV"
 
 export const useObservationTableViewModel = ({observations}: props) => {
     const [modifiedObservations, setModifiedObservations] = useState<Observation[]>(observations);
-    const [selectedObservations, setSelectedObservations] = useState<Observation[]>([]);
     const [selectedFormat, setSelectedFormat] = useState<ExportType>(defaultExportType);
 
     const [selectionModel, setSelectionModel] =
@@ -26,13 +25,16 @@ export const useObservationTableViewModel = ({observations}: props) => {
         setModifiedObservations(observations); //sync modified when the source changes
     }, [observations]);
 
-    useEffect(() => {
+    const selectedObservations = useMemo(() => {
         if (selectionModel.type === "include") {
-            setSelectedObservations(observations.filter((observation) => {
-                return selectionModel.ids.has(observation.observationId);
-            }))
+
+            return modifiedObservations.filter(observation =>
+                selectionModel.ids.has(observation.observationId))
+        } else {
+            return modifiedObservations.filter(observation =>
+                !selectionModel.ids.has(observation.observationId))
         }
-    }, [selectionModel, observations])
+    }, [selectionModel, modifiedObservations])
 
 
     /*
