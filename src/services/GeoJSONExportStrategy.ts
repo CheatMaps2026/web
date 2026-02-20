@@ -23,7 +23,8 @@ export class GeoJSONExportStrategy extends ExportStrategy {
     }
 
 
-    private createProperties = (observation: Observation): Record<string, unknown> => {
+    private createProperties(observation: Observation): Record<string, unknown> {
+        console.log("createProperties", observation)
         return {
             userId: observation.userId,
             observationId: observation.observationId,
@@ -38,7 +39,6 @@ export class GeoJSONExportStrategy extends ExportStrategy {
 
     private toFeature(observation: Observation): GeoJSONFeature {
         const coordinates = observation.position.coordinates ?? []
-
         if (coordinates.length == 1) {
             return {
                 type: "Feature",
@@ -52,6 +52,7 @@ export class GeoJSONExportStrategy extends ExportStrategy {
 
         //else it is a POLYGON
         const closed = [...coordinates, coordinates[0]]
+        console.log("closed", closed)
         return {
             type: "Feature",
             geometry: {
@@ -65,7 +66,7 @@ export class GeoJSONExportStrategy extends ExportStrategy {
     private observationsToGeoJSON(): GeoJSONFeatureCollection {
         return {
             type: "FeatureCollection",
-            features: this.observations.map(this.toFeature)
+            features: this.observations.map(observation => this.toFeature(observation))
         }
     }
 
