@@ -7,7 +7,7 @@ export const MapView = () => {
     const {observations, tableModel} = useMapViewModel()
 
     return (
-        <div className='map-view'>
+        <div className='map-view-root'>
             <MapTiles observations={observations}/>
             <ObservationTable viewModel={tableModel}/>
         </div>

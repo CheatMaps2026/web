@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import './Observations.css';
-import Map from "./Map";
-import {useApiClient} from "./providers/ApiClientProvider";
+import {useApiClient} from "../providers/ApiClientProvider.js";
 
 function Observations() {
     const [observations, setObservations] = useState({ "Items": [] });

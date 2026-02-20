@@ -70,3 +70,29 @@ button:focus-visible {
         background-color: #f9f9f9;
     }
 }
+
+
+.gm-style .gm-style-iw {
+    /*padding: 0 !important;*/
+    background-color: #000000;
+
+}
+
+.gm-style .gm-style-iw-d {
+    /*padding: 0 !important;*/
+    background-color: #000000;
+
+}
+
+.gm-style .gm-style-iw-c {
+    /*padding: 0 !important;*/
+    max-width: none !important;
+    background-color: #000000;
+
+}
+
+.gm-style .gm-style-iw-c {
+    /*background: transparent !important;*/
+    background-color: #000000;
+    /*box-shadow: none !important;*/
+}

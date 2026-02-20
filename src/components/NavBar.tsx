@@ -4,11 +4,11 @@ import '../App.css'
 export const NavBar = () => {
     const navItems = [
         {to: '/', label: 'Home'},
-        {to: '/map', label: 'Map'},
-        {to: '/about', label: 'About'},
-        {to: '/contact', label: 'Contact'},
-        {to: '/newsletter', label: 'Join our newsletter'},
         {to: '/verification', label: 'Verification'},
+        {to: '/map', label: 'Map'},
+        {to: '/newsletter', label: 'Newsletter'},
+        {to: '/about', label: 'About'},
+        // {to: '/contact', label: 'Contact'},
     ]
 
     return (
