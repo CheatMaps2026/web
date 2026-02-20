@@ -1,0 +1,61 @@
+import {Observation} from "../model/observations";
+
+export type ObservationFilters = {
+    start?: Date;
+    end?: Date;
+    verificationRating?: number;
+    estimatedArea?: number;
+    percentCoverage?: number;
+}
+
+export class FilterService {
+    constructor(private observations: Observation[]) {
+    }
+
+    //if end is not undefined or null, filter everything after from
+    byDateRange(start: Date, end?: Date): Observation[] {
+        if (!end) {
+            return this.observations.filter((observation) => observation.timestamp >= start.getTime())
+        }
+        return this.observations.filter((observation) => observation.timestamp >= start.getTime() && observation.timestamp <= end.getTime())
+    }
+
+    byVerificationStatus(statusQuery: number): Observation[] {
+        if (!statusQueryRange.includes(statusQuery)) {
+            throw new Error("Unexpected status query value")
+        }
+        return this.observations.filter((observation) => observation.verificationRating == statusQuery)
+    }
+
+    byEstimatedArea(areaQuery: number) {
+        return this.observations.filter((observation) => observation.estimatedArea <= areaQuery)
+    }
+
+    byPercentCoverage(percentQuery: number) {
+        return this.observations.filter((observation) => observation.percentCoverage == percentQuery)
+    }
+
+    apply(filters: ObservationFilters) {
+
+        if (filters.start || filters.end) {
+            this.observations = this.byDateRange(filters.start!, filters.end)
+        }
+
+        if (filters.verificationRating !== undefined) {
+            this.observations = this.byVerificationStatus(filters.verificationRating)
+        }
+
+        if (filters.estimatedArea !== undefined) {
+            this.observations = this.byEstimatedArea(filters.estimatedArea)
+        }
+
+        if (filters.percentCoverage !== undefined) {
+            this.observations = this.byPercentCoverage(filters.percentCoverage)
+        }
+
+        return this.observations
+    }
+}
+
+
+const statusQueryRange = [0, 1, 2, 3] //unverified, no, yes, maybe
