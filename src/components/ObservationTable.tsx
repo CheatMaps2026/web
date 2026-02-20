@@ -142,7 +142,6 @@ export const ObservationTable = ({viewModel}: props) => {
 
             {modifiedObservations &&
                 <DataGrid
-                    showToolbar={true}
                     checkboxSelection={true}
                     autoHeight={true}
                     rows={modifiedObservations}
