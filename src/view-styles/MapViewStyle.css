@@ -68,17 +68,31 @@
     width: 20vh;
     background-color: #000000;
     align-self: center;
+    margin-bottom: 20px;
 }
 
 .filter-bar button:hover {
     background-color: #1b1eba;
+    border-color: #5c5edc;
+}
+
+.filter-bar button:disabled {
+    background-color: #000000;
+}
+
+.filter-bar button:disabled:hover {
+    background-color: #d34343;
+}
+
+.filter-bar button:enabled:hover {
+    background-color: #4dae36;
 }
 
 .filter-bar input {
     background-color: #a8a3a3;
 }
 
-.filter-bar select {
+.form-select {
     background-color: #818181;
     text-align: center;
     align-self: center;
@@ -96,4 +110,13 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+.export-drop-down-container {
+    align-self: center;
+    width: 95%
+}
+
+.export-drop-down {
+
 }

@@ -2,15 +2,20 @@ import {SubmitEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
 import {Observation} from "../model/observations";
 import {FilterService, ObservationFilters} from "../services/FilterService";
 import {GridRowSelectionModel} from "@mui/x-data-grid";
+import {exportRegistry} from "./exportRegistry";
+import {sanitize} from "../utils/manipulation";
 
 type props = {
     observations: Observation[];
 }
 
+export type ExportType = "CSV" | "GEOJSON"
+const defaultExportType: ExportType = "CSV"
 
 export const useObservationTableViewModel = ({observations}: props) => {
     const [modifiedObservations, setModifiedObservations] = useState<Observation[]>(observations);
     const [selectedObservations, setSelectedObservations] = useState<Observation[]>([]);
+    const [selectedFormat, setSelectedFormat] = useState<ExportType>(defaultExportType);
 
     const [selectionModel, setSelectionModel] =
         useState<GridRowSelectionModel>({
@@ -59,13 +64,24 @@ export const useObservationTableViewModel = ({observations}: props) => {
         setSelectionModel(model);
     }
 
+    const exportData = async () => {
+        const exportCommand = exportRegistry[selectedFormat]
+        selectedObservations.forEach(sanitize)
+        await exportCommand(selectedObservations)
+    }
+
+
     return {
         observations,
         modifiedObservations,
         setModifiedObservations,
         selectionModel,
+        selectedFormat,
+        setSelectedFormat,
+        setSelectionModel,
         selector,
         filterFormSubmit,
+        exportData,
         selectedObservations,
     }
 }

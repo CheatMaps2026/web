@@ -1,6 +1,7 @@
-import {useObservationTableViewModel} from "../view-models/useObservationTableViewModel";
+import {ExportType, useObservationTableViewModel} from "../view-models/useObservationTableViewModel";
 import {Observation} from "../model/observations";
 import {DataGrid, GridColDef} from '@mui/x-data-grid';
+import {useState} from "react";
 
 
 const columns: GridColDef[] = [
@@ -57,6 +58,12 @@ const percentCoverageOptions = [
     {value: "100", label: "More than 50%"},
 ]
 
+
+const exportOptions = [
+    {value: "CSV", label: "CSV"},
+    {value: "GEOJSON", label: "GEOJSON"},
+]
+
 type props = {
     viewModel: ReturnType<typeof useObservationTableViewModel>
 }
@@ -67,8 +74,12 @@ export const ObservationTable = ({viewModel}: props) => {
         filterFormSubmit,
         selectionModel,
         selector,
-        selectedObservations
+        selectedObservations,
+        selectedFormat,
+        exportData,
+        setSelectedFormat
     } = viewModel
+
 
     return (
         <div className={"observation-table"}>
@@ -97,6 +108,7 @@ export const ObservationTable = ({viewModel}: props) => {
                                 ))}
                             </select>
                         </div>
+
                         <div className={"filter-option"}>
                             <label htmlFor={"percent-coverage"}>Percent Coverage</label>
                             <select className={"form-select"} id={"percent-coverage"} name={"percentCoverage"}>
@@ -109,11 +121,28 @@ export const ObservationTable = ({viewModel}: props) => {
                     <button type={"submit"} form={"filterForm"}>
                         Apply filter
                     </button>
+
+                    <div className={"export-drop-down-container"}>
+                        <label htmlFor={"export"}>Export format</label>
+                        <select className={"export-drop-down"} name={"export"}
+                                onChange={(event) => setSelectedFormat(event.currentTarget.value as ExportType)}>
+                            {exportOptions.map((option, index) => (
+                                <option key={index} value={option.value}>{option.label}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <button type={"submit"} onClick={exportData}
+                            disabled={selectedObservations.length == 0}>
+                        Export
+                    </button>
+
                 </div> :
                 <div><h1>Loading...</h1></div>}
 
             {modifiedObservations &&
                 <DataGrid
+                    showToolbar={true}
                     checkboxSelection={true}
                     autoHeight={true}
                     rows={modifiedObservations}
@@ -125,7 +154,6 @@ export const ObservationTable = ({viewModel}: props) => {
                     initialState={{
                         pagination: {paginationModel: {pageSize: 10}},
                     }}
-                    showToolbar={true}
                     rowSelectionModel={selectionModel}
                     onRowSelectionModelChange={(model) => {
                         console.log(model)

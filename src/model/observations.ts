@@ -5,14 +5,17 @@ export type OriginMarker = {
     accuracy: number
 }
 
+
+export type LatLng = {
+    latitude: number,
+    longitude: number
+}
+
 export type Observation = {
     userId: string,
     observationId: string,
     position: {
-        coordinates?: [{
-            latitude: number,
-            longitude: number
-        }],
+        coordinates?: LatLng[],
         gpsOrigin: OriginMarker
     },
     notes: string,
