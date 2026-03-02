@@ -1,4 +1,5 @@
 import axios, {AxiosInstance, AxiosError} from "axios";
+import {Observation} from "../model/observations";
 
 type options = {
     baseUrl: string
@@ -24,7 +25,14 @@ export class ApiClientService {
         console.log("GET", url)
         try {
             const res = await this.axios.get<T>(url, {params})
-            return res.data;
+            console.log("response", res)
+
+            // @ts-ignore
+            const parsed = JSON.parse(res.data.body)
+            console.log("parsed response", parsed)
+            return parsed
+
+
         } catch (error) {
             const normalizedError = normalizeError(error)
             console.warn("Network error", normalizedError)

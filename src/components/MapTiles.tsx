@@ -26,7 +26,7 @@ export const MapTiles = ({observations}: props) => {
         <div className='map-container'>
             {isLoaded ? (
                 <GoogleMap
-                    onClick={()=>setActiveId(null)}
+                    onClick={() => setActiveId(null)}
                     onZoomChanged={() => setActiveId(null)} // optional
                     center={center}
                     zoom={13}
@@ -39,9 +39,9 @@ export const MapTiles = ({observations}: props) => {
                     options={{
                         clickableIcons: false,
                         styles: [
-                            { featureType: "poi", elementType: "all", stylers: [{ visibility: "off" }] },
-                            { featureType: "transit", elementType: "all", stylers: [{ visibility: "off" }] },
-                            { featureType: "road", elementType: "labels", stylers: [{ visibility: "off" }] },
+                            {featureType: "poi", elementType: "all", stylers: [{visibility: "off"}]},
+                            {featureType: "transit", elementType: "all", stylers: [{visibility: "off"}]},
+                            {featureType: "road", elementType: "labels", stylers: [{visibility: "off"}]},
                         ],
                     }}
                 >
@@ -61,20 +61,24 @@ export const MapTiles = ({observations}: props) => {
                                         onClick={() => setActiveId(observation.observationId)}>
                                     {isOpen && (
                                         <InfoWindow onCloseClick={() => setActiveId(null)}>
-                                            <div className={"info-window-container"}>
-                                                <div className={"info-window-title-container"}>
-                                                    <h3>{observation.position.coordinates!.length > 1 ? `Polygon Observation` : `Point Observation`}</h3>
-                                                    <p>
-                                                        {observation.observationId}
-                                                    </p>
+                                            <div className={"info-window-content"}>
+                                                <img alt={`observation${observation.observationId}`}
+                                                     src={observation.image}/>
+                                                <div className={"info-window-container"}>
+                                                    <div className={"info-window-title-container"}>
+                                                        <h3>{observation.position.coordinates!.length > 1 ? `Polygon Observation` : `Point Observation`}</h3>
+                                                        <p>
+                                                            {observation.observationId}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className={"info-window-info-container"}>
+                                                        <p>notes: {observation.notes}</p>
+                                                        <p>estimated area: {observation.estimatedArea} square meters</p>
+                                                        <p>percent coverage: {observation.percentCoverage}%</p>
+                                                    </div>
                                                 </div>
 
-                                                <div className={"info-window-info-container"}>
-                                                    <p>notes: {observation.notes}</p>
-                                                    <p>estimated area: {observation.estimatedArea} square meters</p>
-                                                    <p>percent coverage: {observation.percentCoverage}%</p>
-
-                                                </div>
                                             </div>
                                         </InfoWindow>
                                     )}
