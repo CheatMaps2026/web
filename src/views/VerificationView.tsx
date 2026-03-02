@@ -1,4 +1,5 @@
 import "../view-styles/VerificationViewStyle.css"
+import Observations from "../DEPRECATED/Observations";
 
 export const VerificationView = () => {
     return (
@@ -6,6 +7,7 @@ export const VerificationView = () => {
             <div className={"instructions-container"}><h1>Verify the following observations</h1></div>
             {/*    Image*/}
             {/*    Action footer under image*/}
+            <Observations/>
         </div>
     )
 }

@@ -101,7 +101,7 @@ export const ObservationTable = ({viewModel}: props) => {
                             </select>
                         </div>
                         <div className={"filter-option"}>
-                            <label htmlFor={"estimated-area"}>Estimated Area</label>
+                            <label htmlFor={"estimated-area"}>Estimated Area (WIP)</label>
                             <select className={"form-select"} id={"estimated-area"} name={"estimatedArea"}>
                                 {estimatedAreaOptions.map((option, index) => (
                                     <option key={index} value={option.value}>{option.label}</option>
@@ -110,7 +110,7 @@ export const ObservationTable = ({viewModel}: props) => {
                         </div>
 
                         <div className={"filter-option"}>
-                            <label htmlFor={"percent-coverage"}>Percent Coverage</label>
+                            <label htmlFor={"percent-coverage"}>Percent Coverage (WIP)</label>
                             <select className={"form-select"} id={"percent-coverage"} name={"percentCoverage"}>
                                 {percentCoverageOptions.map((option, index) => (
                                     <option key={index} value={option.value}>{option.label}</option>
@@ -142,7 +142,6 @@ export const ObservationTable = ({viewModel}: props) => {
 
             {modifiedObservations &&
                 <DataGrid
-                    showToolbar={true}
                     checkboxSelection={true}
                     autoHeight={true}
                     rows={modifiedObservations}

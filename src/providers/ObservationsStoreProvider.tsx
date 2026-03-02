@@ -21,10 +21,12 @@ export const ObservationsStoreProvider = ({children}: { children: ReactNode }) =
 
     useEffect(() => {
         const loadData = async () => {
+            console.log('loading observations')
             try {
-                const response: GetObservationsResponse = await apiClient.get("/observations")
-                if (response.data) {
-                    setObservations(response.data);
+                const response: Observation[] = await apiClient.get("/observations")
+
+                if (response) {
+                    setObservations(response);
                 } else {
                     setObservations([]);
                 }
@@ -34,7 +36,10 @@ export const ObservationsStoreProvider = ({children}: { children: ReactNode }) =
                 setLoading(false);
             }
         }
-        loadData();
+        loadData(); //run immediately first
+
+        const interval = setInterval(loadData, 5 * 60 * 1000) //run every 5 minutes
+        return () => clearInterval(interval)
     }, [])
 
     const value = useMemo(() => ({

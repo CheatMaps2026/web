@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import './Observations.css';
-import {useApiClient} from "../providers/ApiClientProvider.js";
 
 function Observations() {
-    const [observations, setObservations] = useState({ "Items": [] });
-    const apiClient = useApiClient()
-    console.log(apiClient.getBaseUrl())
+    const [observations, setObservations] = useState({"Items": []});
     const [verificationRating, setVerificationRating] = useState('1'); // 1 for default rating.
 
     const [message, setMessage] = useState('');
@@ -27,19 +24,19 @@ function Observations() {
                 }
             }
         },
-        "ObservationID": { "S": "" },
-        "VerificationRating": { "N": "1" },
+        "ObservationID": {"S": ""},
+        "VerificationRating": {"N": "1"},
         "coords": {
             "M": {
                 "latitude": {
-                    "S":""
+                    "S": ""
                 },
                 "longitude": {
-                    "S":""
+                    "S": ""
                 }
             }
         },
-        "timestamp": { "N": ""}
+        "timestamp": {"N": ""}
     });
 
     const [obsId, setObservationId] = useState(0);
@@ -61,9 +58,9 @@ function Observations() {
             });
     }, []);
 
-    function sanitizeURL(url){
+    function sanitizeURL(url) {
         const validChars = /^[a-zA-Z0-9_:/]+$/;
-        if(!validChars.test(url)){
+        if (!validChars.test(url)) {
             return "https://via.placeholder.com/300";
         }
         return url;
@@ -116,7 +113,7 @@ function Observations() {
             VerificationRating: rating,
         };
 
-        if(rating === '0'){
+        if (rating === '0') {
             const deletePayload = {
                 ObservationID: obs.ObservationID.S,
                 UserID: obs.UserID.S,
@@ -129,15 +126,14 @@ function Observations() {
                 },
                 body: JSON.stringify(deletePayload),
             })
-            .then(response => response.json())
-            .then(data => {
-                setMessage("Success");
-            })
-            .catch((error) => {
-                setMessage("Error: " + error.message);
-            });
-        }
-        else if(rating === '2' || rating === '3'){
+                .then(response => response.json())
+                .then(data => {
+                    setMessage("Success");
+                })
+                .catch((error) => {
+                    setMessage("Error: " + error.message);
+                });
+        } else if (rating === '2' || rating === '3') {
             console.log("rating is 2 or 3");
 
             fetch("https://lt0clq58fh.execute-api.us-east-1.amazonaws.com/Verify/Verify", {
@@ -148,13 +144,13 @@ function Observations() {
                 },
                 body: JSON.stringify(payload),
             })
-            .then(response => response.json())
-            .then(data => {
-                setMessage("Success");
-            })
-            .catch((error) => {
-                setMessage("Error: " + error.message);
-            }); 
+                .then(response => response.json())
+                .then(data => {
+                    setMessage("Success");
+                })
+                .catch((error) => {
+                    setMessage("Error: " + error.message);
+                });
         }
     }
 
@@ -188,20 +184,26 @@ function Observations() {
         const date = new Date(timestampMilliseconds);
         return date.toDateString();
     }
-    
+
     return (
         <>
             <div className="app-container">
-                <Map coordinates={{ latitude: parseFloat(obs.coords.M.latitude.S), longitude: parseFloat(obs.coords.M.longitude.S)}} />
+                {/*<Map coordinates={{ latitude: parseFloat(obs.coords.M.latitude.S), longitude: parseFloat(obs.coords.M.longitude.S)}} />*/}
                 <div className="flex-container">
                     <img className="observation-image" src={obs.observationImageURL.S} alt="Observation"></img>
                     <div className="details-container">
                         <div><b>Observation {obsId + 1} of {observations.Items.length}</b></div>
                         <div><b>Current Rating: </b>{currentRating()}</div>
                         <div className="button-group">
-                            <button className={"btn not-cheatgrass " + selectedVerification(0)} onClick={() => handleVerificationRating('0')}>Not Cheatgrass</button>
-                            <button className={"btn maybe-cheatgrass " + selectedVerification(3)} onClick={() => handleVerificationRating('3')}>Maybe Cheatgrass</button>
-                            <button className={"btn cheatgrass " + selectedVerification(2)} onClick={() => handleVerificationRating('2')}>Cheatgrass</button>
+                            <button className={"btn not-cheatgrass " + selectedVerification(0)}
+                                    onClick={() => handleVerificationRating('0')}>Not Cheatgrass
+                            </button>
+                            <button className={"btn maybe-cheatgrass " + selectedVerification(3)}
+                                    onClick={() => handleVerificationRating('3')}>Maybe Cheatgrass
+                            </button>
+                            <button className={"btn cheatgrass " + selectedVerification(2)}
+                                    onClick={() => handleVerificationRating('2')}>Cheatgrass
+                            </button>
                         </div>
                         <div className="button-group">
                             <button disabled={obsId == 0} onClick={prevObservation}>Previous</button>
