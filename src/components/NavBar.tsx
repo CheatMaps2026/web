@@ -3,12 +3,10 @@ import '../App.css'
 
 export const NavBar = () => {
     const navItems = [
-        {to: '/', label: 'Home'},
         {to: '/verification', label: 'Verification'},
         {to: '/map', label: 'Map'},
         {to: '/newsletter', label: 'Newsletter'},
         {to: '/about', label: 'About'},
-        // {to: '/contact', label: 'Contact'},
     ]
 
     return (
