@@ -23,7 +23,7 @@
 }
 
 .overlay-anchor {
-    transform: translate(-50%, -100%);
+    transform: translate(-50%, -50%);
     pointer-events: auto;
     width: min(700px, 90vw);
     max-height: 80vh;
