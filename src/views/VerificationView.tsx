@@ -1,13 +1,77 @@
 import "../view-styles/VerificationViewStyle.css"
-import Observations from "../DEPRECATED/Observations";
+import {useObservationStoreContext} from "../providers/ObservationsStoreProvider";
+import {useState} from "react";
 
 export const VerificationView = () => {
+    const {observations, loading, error} = useObservationStoreContext();
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const prev = () => {
+        setActiveIndex((prevIndex) => prevIndex === 0 ? observations.length - 1 : prevIndex - 1);
+    }
+
+    const next = () => {
+        setActiveIndex((prevIndex) =>
+            prevIndex === observations.length - 1 ? 0 : prevIndex + 1
+        );
+    }
+
     return (
         <div className={"verification-view-root"}>
-            <div className={"instructions-container"}><h1>Verify the following observations</h1></div>
-            {/*    Image*/}
-            {/*    Action footer under image*/}
-            <Observations/>
+            {loading ? (
+                <div><h1>Loading</h1></div>
+            ) : (
+                <div className="verification-view">
+                    <div className={"instructions-container"}><h1>Verify the following observations</h1></div>
+                    <div className="carousel-shell">
+                        <button onClick={prev} className="prev-button">
+                            Previous
+                        </button>
+
+                        <div className="observation-carousel-container">
+                            <ul
+                                className="observation-carousel"
+                                style={{transform: `translateX(-${activeIndex * 100}%)`}}
+                            >
+                                {observations.map((observation) => (
+                                    <li
+                                        key={observation.observationId}
+                                        className="observation-carousel-item"
+                                    >
+                                        <div className="carousel-image-container">
+                                            <img
+                                                className="carousel-image"
+                                                alt={observation.observationId}
+                                                src={observation.image}
+                                            />
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <button onClick={next} className="next-button">
+                            Next
+                        </button>
+                    </div>
+                    <div className={"verification-controls"}>
+                        <button className={"not-cheatgrass"}>
+                            Not cheatgrass
+                        </button>
+                        <button className={"maybe-cheatgrass"}>
+                            Maybe cheatgrass
+                        </button>
+                        <button className={"cheatgrass"}>
+                            Cheatgrass
+                        </button>
+                    </div>
+
+                </div>
+
+
+            )}
+
+
         </div>
     )
 }
