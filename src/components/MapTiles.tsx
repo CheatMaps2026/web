@@ -2,11 +2,24 @@ import {Observation} from "../model/observations";
 import {GoogleMap, InfoWindow, Marker, MarkerF, PolygonF, useLoadScript, OverlayView} from "@react-google-maps/api";
 import {Fragment, useEffect, useState} from "react";
 import {CustomCalloutWindow} from "./CustomCalloutWindow";
+import {useNavigate} from "react-router";
 
 type props = {
     observations: Observation[] | null
 }
+
+const verificationToColor: Record<number, string> = {
+    0: "#3659e4",
+    1: "#ff0000",
+    2: "#00ff00",
+    3: "#f1b129",
+}
+
 export const MapTiles = ({observations}: props) => {
+    const navigate = useNavigate();
+
+    const [selectedObservation, setSelectedObservation] = useState<Observation | null>(null);
+
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: 'AIzaSyCbAVEkhkMf11mpQXOUFzmyhFCCo_fmu3M'
     })
@@ -23,11 +36,8 @@ export const MapTiles = ({observations}: props) => {
         const observation = observations.filter((obs) => obs.observationId === activeId)[0]
         const newCenter = {lat: observation.position.gpsOrigin.latitude, lng: observation.position.gpsOrigin.longitude}
         setCenter(newCenter)
-    }, [center])
+    }, [activeId, observations])
 
-    const imagePress = () => {
-        console.log("image has been pressed")
-    }
 
     return (
         <div className='map-container'>
@@ -64,14 +74,30 @@ export const MapTiles = ({observations}: props) => {
                         return (
                             <Fragment key={observation.observationId}>
                                 <Marker position={{lat: origin.latitude, lng: origin.longitude}}
-                                        onClick={() => setActiveId(observation.observationId)}
+                                        onClick={() => {
+                                            setActiveId(observation.observationId)
+                                            setSelectedObservation(observation)
+                                        }}
+                                        icon={{
+                                            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                                            fillColor: verificationToColor[observation.verificationRating],
+                                            fillOpacity: 1,
+                                            strokeWeight: 1,
+                                            scale: 5,
+                                        }}
+
                                 >
                                     {isOpen && (
                                         <OverlayView
                                             position={{lat: origin.latitude, lng: origin.longitude}}
                                             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
                                             <div className={"overlay-anchor"}>
-                                                <CustomCalloutWindow observation={observation} imagePress={imagePress}/>
+                                                <CustomCalloutWindow observation={observation}
+                                                                     imagePress={() => {
+                                                                         navigate(`/image/${observation.observationId}`, {
+                                                                             state: {image: observation.image}
+                                                                         })
+                                                                     }}/>
                                             </div>
                                         </OverlayView>
                                     )}
@@ -81,8 +107,8 @@ export const MapTiles = ({observations}: props) => {
                                     <PolygonF
                                         path={path}
                                         options={{
-                                            fillColor: "rgba(255,0,0,0.2)",
-                                            strokeColor: "#d600ab",
+                                            fillColor: verificationToColor[observation.verificationRating],
+                                            strokeColor: "#fa0808",
                                             strokeWeight: 2
                                         }}
                                     />

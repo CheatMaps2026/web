@@ -8,6 +8,8 @@ type Props = {
 }
 
 export const CustomCalloutWindow = ({observation, imagePress}: Props) => {
+
+    console.log(observation);
     return (
         <div className={"info-window-content"}>
             <div className={"info-window-card"}>
@@ -22,7 +24,8 @@ export const CustomCalloutWindow = ({observation, imagePress}: Props) => {
                     <div className={"info-window-img-frame"}>
                         <img alt={`observation${observation.observationId}`}
                              src={observation.image}
-                             className="info-window-img"/>
+                             className="info-window-img"
+                             onClick={imagePress}/>
                     </div>
                     <div className={"info-window-description"}>
                         <div className={"info-window-info-container"}>
