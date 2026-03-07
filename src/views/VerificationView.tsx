@@ -1,20 +1,29 @@
 import "../view-styles/VerificationViewStyle.css"
 import {useObservationStoreContext} from "../providers/ObservationsStoreProvider";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {Observation} from "../model/observations";
 
 export const VerificationView = () => {
     const {observations, loading, error} = useObservationStoreContext();
+    const [unverifiedObservations, setUnverifiedObservations] = useState<Observation[]>([]);
     const [activeIndex, setActiveIndex] = useState(0);
 
+    useEffect(() => {
+        if (loading) return;
+        setUnverifiedObservations(observations.filter((observation) => observation.verificationRating == 0))
+        console.log("unverifiedObservations", unverifiedObservations.length);
+    }, [observations]);
+
     const prev = () => {
-        setActiveIndex((prevIndex) => prevIndex === 0 ? observations.length - 1 : prevIndex - 1);
+        setActiveIndex((prevIndex) => prevIndex === 0 ? unverifiedObservations.length - 1 : prevIndex - 1);
     }
 
     const next = () => {
         setActiveIndex((prevIndex) =>
-            prevIndex === observations.length - 1 ? 0 : prevIndex + 1
+            prevIndex === unverifiedObservations.length - 1 ? 0 : prevIndex + 1
         );
     }
+
 
     return (
         <div className={"verification-view-root"}>
@@ -33,7 +42,7 @@ export const VerificationView = () => {
                                 className="observation-carousel"
                                 style={{transform: `translateX(-${activeIndex * 100}%)`}}
                             >
-                                {observations.map((observation) => (
+                                {unverifiedObservations.map((observation) => (
                                     <li
                                         key={observation.observationId}
                                         className="observation-carousel-item"

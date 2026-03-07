@@ -3,18 +3,20 @@ import {Observation} from "../model/observations";
 
 type options = {
     baseUrl: string
+    apiKey: string
 }
 
 export class ApiClientService {
     private axios: AxiosInstance
     private readonly baseUrl: string
 
-    constructor({baseUrl}: options) {
+    constructor({baseUrl, apiKey}: options) {
         this.baseUrl = baseUrl
         this.axios = axios.create({
             baseURL: baseUrl,
             timeout: 10000
         })
+        this.axios.defaults.headers["x-api-key"] = apiKey
     }
 
     getBaseUrl() {
