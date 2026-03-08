@@ -30,9 +30,10 @@ export class ApiClientService {
             console.log("response", res)
 
             // @ts-ignore
-            const parsed = JSON.parse(res.data.body)
-            console.log("parsed response", parsed)
-            return parsed
+            return res.data.data
+            // const parsed = JSON.parse(res.data.body)
+            // console.log("parsed response", parsed)
+            // return parsed
 
 
         } catch (error) {
