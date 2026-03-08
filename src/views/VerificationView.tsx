@@ -3,11 +3,16 @@ import {useObservationStoreContext} from "../providers/ObservationsStoreProvider
 import {useEffect, useState} from "react";
 import {Observation} from "../model/observations";
 import {useApiClient} from "../providers/ApiClientProvider";
+import {useVerificationFunctions} from "../view-models/useVerificationFunctions";
 
 export const VerificationView = () => {
     const {observations, loading, error} = useObservationStoreContext();
     const [unverifiedObservations, setUnverifiedObservations] = useState<Observation[]>([]);
     const apiClient = useApiClient();
+    const {labelNotCheatgrass, labelMaybeCheatgrass, labelYesCheatgrass} = useVerificationFunctions({
+        observations: unverifiedObservations,
+        apiClient: apiClient
+    })
     const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
@@ -26,35 +31,35 @@ export const VerificationView = () => {
         );
     }
 
-    const labelNotCheatgrass = async () => {
-        const {userId, observationId} = unverifiedObservations[activeIndex];
-        const body = {
-            verificationRating: 1
-        }
-
-        const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
-        console.log(response)
-    }
-
-    const labelMaybeCheatgrass = async () => {
-        const {userId, observationId} = unverifiedObservations[activeIndex];
-        const body = {
-            verificationRating: 3
-        }
-
-        const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
-        console.log(response)
-    }
-
-    const labelYesCheatgrass = async () => {
-        const {userId, observationId} = unverifiedObservations[activeIndex];
-        const body = {
-            verificationRating: 2
-        }
-
-        const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
-        console.log(response)
-    }
+    // const labelNotCheatgrass = async () => {
+    //     const {userId, observationId} = unverifiedObservations[activeIndex];
+    //     const body = {
+    //         verificationRating: 1
+    //     }
+    //
+    //     const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
+    //     console.log(response)
+    // }
+    //
+    // const labelMaybeCheatgrass = async () => {
+    //     const {userId, observationId} = unverifiedObservations[activeIndex];
+    //     const body = {
+    //         verificationRating: 3
+    //     }
+    //
+    //     const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
+    //     console.log(response)
+    // }
+    //
+    // const labelYesCheatgrass = async () => {
+    //     const {userId, observationId} = unverifiedObservations[activeIndex];
+    //     const body = {
+    //         verificationRating: 2
+    //     }
+    //
+    //     const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
+    //     console.log(response)
+    // }
 
 
     return (
@@ -96,13 +101,13 @@ export const VerificationView = () => {
                         </button>
                     </div>
                     <div className={"verification-controls"}>
-                        <button className={"not-cheatgrass"} onClick={labelNotCheatgrass}>
+                        <button className={"not-cheatgrass"} onClick={() => labelNotCheatgrass(activeIndex)}>
                             Not cheatgrass
                         </button>
-                        <button className={"maybe-cheatgrass"} onClick={labelMaybeCheatgrass}>
+                        <button className={"maybe-cheatgrass"} onClick={() => labelMaybeCheatgrass(activeIndex)}>
                             Maybe cheatgrass
                         </button>
-                        <button className={"cheatgrass"} onClick={labelYesCheatgrass}>
+                        <button className={"cheatgrass"} onClick={() => labelYesCheatgrass(activeIndex)}>
                             Cheatgrass
                         </button>
                     </div>
