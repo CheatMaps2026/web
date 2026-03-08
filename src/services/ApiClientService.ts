@@ -54,6 +54,18 @@ export class ApiClientService {
             throw normalizedError
         }
     }
+
+    async patch<T>(url: string, body?: unknown): Promise<T> {
+        console.log("PATCH", url)
+        try {
+            const res = await this.axios.patch<T>(url, body)
+            return res.data;
+        } catch (error) {
+            const normalizedError = normalizeError(error)
+            console.error("Network error", normalizedError)
+            throw normalizedError
+        }
+    }
 }
 
 export type NormalizedAxiosError = {
