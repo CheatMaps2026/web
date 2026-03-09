@@ -4,9 +4,6 @@ import {Fragment, useEffect, useState} from "react";
 import {CustomCalloutWindow} from "./CustomCalloutWindow";
 import {useNavigate} from "react-router";
 
-type props = {
-    observations: Observation[] | null
-}
 
 const verificationToColor: Record<number, string> = {
     0: "#3659e4",
@@ -15,7 +12,13 @@ const verificationToColor: Record<number, string> = {
     3: "#f1b129",
 }
 
-export const MapTiles = ({observations}: props) => {
+type props = {
+    observations: Observation[] | null,
+    apiClient: any
+}
+
+
+export const MapTiles = ({observations, apiClient}: props) => {
     const navigate = useNavigate();
 
     const [selectedObservation, setSelectedObservation] = useState<Observation | null>(null);
@@ -97,7 +100,9 @@ export const MapTiles = ({observations}: props) => {
                                                                          navigate(`/image/${observation.observationId}`, {
                                                                              state: {image: observation.image}
                                                                          })
-                                                                     }}/>
+                                                                     }}
+                                                                     apiClient={apiClient}/>
+
                                             </div>
                                         </OverlayView>
                                     )}

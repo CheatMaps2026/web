@@ -8,9 +8,9 @@ import {useVerificationFunctions} from "../view-models/useVerificationFunctions"
 export const VerificationView = () => {
     const {observations, loading, error} = useObservationStoreContext();
     const [unverifiedObservations, setUnverifiedObservations] = useState<Observation[]>([]);
+    const [allVerified, setAllVerified] = useState<boolean>(false);
     const apiClient = useApiClient();
     const {labelNotCheatgrass, labelMaybeCheatgrass, labelYesCheatgrass} = useVerificationFunctions({
-        observations: unverifiedObservations,
         apiClient: apiClient
     })
     const [activeIndex, setActiveIndex] = useState(0);
@@ -20,6 +20,11 @@ export const VerificationView = () => {
         setUnverifiedObservations(observations.filter((observation) => observation.verificationRating == 0))
         console.log("unverifiedObservations", unverifiedObservations.length);
     }, [observations]);
+
+    useEffect(() => {
+        if (loading) return;
+        setAllVerified(unverifiedObservations.length === 0)
+    }, [unverifiedObservations]);
 
     const prev = () => {
         setActiveIndex((prevIndex) => prevIndex === 0 ? unverifiedObservations.length - 1 : prevIndex - 1);
@@ -31,41 +36,40 @@ export const VerificationView = () => {
         );
     }
 
-    // const labelNotCheatgrass = async () => {
-    //     const {userId, observationId} = unverifiedObservations[activeIndex];
-    //     const body = {
-    //         verificationRating: 1
-    //     }
-    //
-    //     const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
-    //     console.log(response)
-    // }
-    //
-    // const labelMaybeCheatgrass = async () => {
-    //     const {userId, observationId} = unverifiedObservations[activeIndex];
-    //     const body = {
-    //         verificationRating: 3
-    //     }
-    //
-    //     const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
-    //     console.log(response)
-    // }
-    //
-    // const labelYesCheatgrass = async () => {
-    //     const {userId, observationId} = unverifiedObservations[activeIndex];
-    //     const body = {
-    //         verificationRating: 2
-    //     }
-    //
-    //     const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
-    //     console.log(response)
-    // }
+    const removeActiveObservation = () => {
+        setUnverifiedObservations((prev) => {
+                if (prev.length === 0) return prev;
+                const updated = prev.filter((_, index) => index !== activeIndex)
+
+                setActiveIndex((currentIndex) => {
+                    if (updated.length === 0) return 0;
+                    if (currentIndex >= updated.length) return updated.length - 1
+                    return currentIndex
+                })
+                return updated
+            }
+        )
+    }
+
+    const verifyActiveObservation = async (verifyFn: (observation: Observation) => Promise<void> | void,) => {
+        const observation = unverifiedObservations[activeIndex];
+        if (!observation) return;
+
+        await verifyFn(observation);
+        removeActiveObservation();
+    }
 
 
     return (
         <div className={"verification-view-root"}>
             {loading ? (
                 <div><h1>Loading</h1></div>
+            ) : allVerified ? (
+                <div className="verification-view">
+                    <div className="instructions-container">
+                        <h1>All observations have been verified</h1>
+                    </div>
+                </div>
             ) : (
                 <div className="verification-view">
                     <div className={"instructions-container"}><h1>Verify the following observations</h1></div>
@@ -101,13 +105,16 @@ export const VerificationView = () => {
                         </button>
                     </div>
                     <div className={"verification-controls"}>
-                        <button className={"not-cheatgrass"} onClick={() => labelNotCheatgrass(activeIndex)}>
+                        <button className={"not-cheatgrass"}
+                                onClick={() => verifyActiveObservation(labelNotCheatgrass)}>
                             Not cheatgrass
                         </button>
-                        <button className={"maybe-cheatgrass"} onClick={() => labelMaybeCheatgrass(activeIndex)}>
+                        <button className={"maybe-cheatgrass"}
+                                onClick={() => verifyActiveObservation(labelMaybeCheatgrass)}>
                             Maybe cheatgrass
                         </button>
-                        <button className={"cheatgrass"} onClick={() => labelYesCheatgrass(activeIndex)}>
+                        <button className={"cheatgrass"}
+                                onClick={() => verifyActiveObservation(labelYesCheatgrass)}>
                             Cheatgrass
                         </button>
                     </div>

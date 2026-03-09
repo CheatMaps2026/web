@@ -1,38 +1,37 @@
 import {Observation} from "../model/observations";
 
 type Props = {
-    observations: Observation[],
     apiClient: any
 }
-export const useVerificationFunctions = ({observations, apiClient}: Props) => {
+export const useVerificationFunctions = ({apiClient}: Props) => {
 
+    const labelNotCheatgrass = async (observation: Observation) => {
+        const {userId, observationId} = observation
+        observation.verificationRating = 1 //Set object value here: causes color change on frontend
+        const body = {verificationRating: 1}
 
-    const labelNotCheatgrass = async (index: number) => {
-        const {userId, observationId} = observations[index];
-        const body = {
-            verificationRating: 1
-        }
+        console.log("Labelling as not")
+        const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
+        console.log(response)
+    }
+
+    const labelMaybeCheatgrass = async (observation: Observation) => {
+        const {userId, observationId} = observation
+        observation.verificationRating = 3//Set object value here: causes color change on frontend
+        const body = {verificationRating: 3}
+
+        console.log("Labelling as maybe")
 
         const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
         console.log(response)
     }
 
-    const labelMaybeCheatgrass = async (index: number) => {
-        const {userId, observationId} = observations[index];
-        const body = {
-            verificationRating: 3
-        }
+    const labelYesCheatgrass = async (observation: Observation) => {
+        const {userId, observationId} = observation
+        observation.verificationRating = 2//Set object value here: causes color change on frontend
+        const body = {verificationRating: 2}
 
-        const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
-        console.log(response)
-    }
-
-    const labelYesCheatgrass = async (index: number) => {
-        const {userId, observationId} = observations[index];
-        const body = {
-            verificationRating: 2
-        }
-
+        console.log("Labelling as yes")
         const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
         console.log(response)
     }
