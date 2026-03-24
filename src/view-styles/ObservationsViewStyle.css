@@ -1,0 +1,100 @@
+.observation-view-root {
+    background-color: #2b2b2b;
+    min-height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    padding-top: 5vh;
+    gap: 4vh;
+}
+
+.observation-table {
+    background-color: #1b1eba;
+    align-self: center;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+.observation-table .MuiDataGrid-root {
+    min-height: 60vh;
+}
+
+.filter-bar {
+    align-self: auto;
+    height: auto;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border-radius: 5px;
+    background-color: #4b4b4b;
+    padding: 10px;
+}
+
+.filter-bar form {
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.filter-bar button {
+    width: 20vh;
+    background-color: #000000;
+    align-self: center;
+    margin-bottom: 20px;
+}
+
+.filter-bar button:hover {
+    background-color: #1b1eba;
+    border-color: #5c5edc;
+}
+
+.filter-bar button:disabled {
+    background-color: #000000;
+}
+
+.filter-bar button:disabled:hover {
+    background-color: #d34343;
+}
+
+.filter-bar button:enabled:hover {
+    background-color: #4dae36;
+}
+
+.filter-bar input {
+    background-color: #a8a3a3;
+}
+
+.form-select {
+    background-color: #818181;
+    text-align: center;
+    align-self: center;
+    flex-direction: row;
+    width: 50%;
+    height: 5vh;
+    border-radius: 10px;
+}
+
+.filter-bar select:hover {
+    border-color: #b5b5b5;
+}
+
+.filter-option {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.export-drop-down-container {
+    align-self: center;
+    width: 95%
+}
+
+.export-drop-down {
+    /* Styles for the export dropdown if needed */
+}

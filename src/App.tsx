@@ -10,6 +10,7 @@ import {ContactView} from "./views/ContactView";
 import {NewsletterView} from "./views/NewsletterView";
 import {ObservationsStoreProvider} from "./providers/ObservationsStoreProvider";
 import {FullscreenImage} from "./components/FullscreenImage";
+import {ObservationView} from "./views/ObservationView";
 
 export const App = () => {
 
@@ -24,6 +25,7 @@ export const App = () => {
                         <Route path={"/"} element={<HomeView/>}/>
                         <Route path={"/image/:observationId"} element={<FullscreenImage/>}/>
                         <Route path={"/verification"} element={<VerificationView/>}/>
+                        <Route path={"/observations"} element={<ObservationView/>}/>
                         <Route path={"/map"} element={<MapView/>}/>
                         <Route path={"/about"} element={<AboutView/>}/>
                         <Route path={"/contact"} element={<ContactView/>}/>

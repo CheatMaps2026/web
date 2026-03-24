@@ -4,6 +4,7 @@ import '../App.css'
 export const NavBar = () => {
     const navItems = [
         {to: '/verification', label: 'Verification'},
+        {to: '/observations', label: 'Observations'},
         {to: '/map', label: 'Map'},
         {to: '/newsletter', label: 'Newsletter'},
         {to: '/about', label: 'About'},
