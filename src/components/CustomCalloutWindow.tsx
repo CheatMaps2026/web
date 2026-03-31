@@ -31,23 +31,25 @@ export const CustomCalloutWindow = ({observation, imagePress, apiClient}: Props)
                              className="info-window-img"
                              onClick={imagePress}/>
                     </div>
-                    <div className={"info-window-description"}>
-                        <div className={"info-window-info-container"}>
-                            <p>notes: {observation.notes}</p>
-                            <p>estimated area: {observation.estimatedArea} square meters</p>
-                            <p>percent coverage: {observation.percentCoverage}%</p>
+                    <div className={"info-window-actions-column"}>
+                        <div className={"info-window-description"}>
+                            <div className={"info-window-info-container"}>
+                                <p>notes: {observation.notes}</p>
+                                <p>estimated area: {observation.estimatedArea} square meters</p>
+                                <p>percent coverage: {observation.percentCoverage}%</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={"verification-controls"}>
-                        <button className={"not-cheatgrass"} onClick={() => labelNotCheatgrass(observation)}>
-                            Not cheatgrass
-                        </button>
-                        <button className={"maybe-cheatgrass"} onClick={() => labelMaybeCheatgrass(observation)}>
-                            Maybe cheatgrass
-                        </button>
-                        <button className={"cheatgrass"} onClick={() => labelYesCheatgrass(observation)}>
-                            Cheatgrass
-                        </button>
+                        <div className={"verification-controls"}>
+                            <button className={"not-cheatgrass"} onClick={() => labelNotCheatgrass(observation)}>
+                                Not cheatgrass
+                            </button>
+                            <button className={"maybe-cheatgrass"} onClick={() => labelMaybeCheatgrass(observation)}>
+                                Maybe cheatgrass
+                            </button>
+                            <button className={"cheatgrass"} onClick={() => labelYesCheatgrass(observation)}>
+                                Cheatgrass
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

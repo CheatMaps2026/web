@@ -42,7 +42,7 @@
 .info-window-card {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 105%;
     align-self: center;
 }
 
@@ -81,17 +81,33 @@
 }
 
 .info-window-img:hover {
-    transform: scale(1.52);
+    transform: scale(1.05);
 }
 
-
-.info-window-description {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+/* This container forces its children to stack vertically */
+.info-window-actions-column {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: space-between; /* Pushes description to top, buttons to bottom */
+    width: 1%;
+    height: 100%;
+    flex: 1; /* Takes up the remaining width next to the image */
+}
+
+/* Change this from row back to column */
+.info-window-description {
+    display: flex;
+    flex-direction: column; /* Changed from row to stack the info container vertically */
+    align-items: flex-start;
     background-color: #2b2b2b;
+}
+
+.verification-controls {
+    margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    width: 92.5%;
+    gap: 5px;
 }
 
 .info-window-title-container h3 {
