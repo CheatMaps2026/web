@@ -5,7 +5,6 @@ import {NavBar} from "./components/NavBar";
 import {HomeView} from "./views/HomeView";
 import {VerificationView} from "./views/VerificationView";
 import {MapView} from "./views/MapView";
-import {AboutView} from "./views/AboutView";
 import {ContactView} from "./views/ContactView";
 import {NewsletterView} from "./views/NewsletterView";
 import {ObservationsStoreProvider} from "./providers/ObservationsStoreProvider";
@@ -27,7 +26,6 @@ export const App = () => {
                         <Route path={"/verification"} element={<VerificationView/>}/>
                         <Route path={"/observations"} element={<ObservationView/>}/>
                         <Route path={"/map"} element={<MapView/>}/>
-                        <Route path={"/about"} element={<AboutView/>}/>
                         <Route path={"/contact"} element={<ContactView/>}/>
                         <Route path={"/newsletter"} element={<NewsletterView/>}/>
                     </Routes>

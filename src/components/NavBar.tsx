@@ -7,7 +7,6 @@ export const NavBar = () => {
         {to: '/observations', label: 'Observations'},
         {to: '/map', label: 'Map'},
         {to: '/newsletter', label: 'Newsletter'},
-        {to: '/about', label: 'About'},
     ]
 
     return (
