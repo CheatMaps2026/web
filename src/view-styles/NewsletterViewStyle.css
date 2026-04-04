@@ -1,0 +1,82 @@
+.newsletter-view-root {
+    min-height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    padding-top: 5vh;
+    gap: 4vh;
+}
+
+.newsletter-error-message {
+    background-color: #a53535;
+    min-height: 300px;
+    min-width: 300px;
+    display: flex;
+}
+
+.newsletter-error-message p {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    color: #000000;
+}
+
+.newsletter-view-grid-container {
+    /*background-color: #00e107;*/
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    margin-left: 30px;
+    margin-top: 25px;
+    width: 95vw;
+    height: 50vh;
+}
+
+
+.newsletter-view-grid {
+    width: 65%;
+    height: 100%;
+    background-color: #1216fa;
+    align-self: flex-start;
+}
+
+
+.newsletter-export-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 100px;
+    flex-direction: row;
+    align-self: center;
+    align-items: flex-end;
+    /*background-color: white;*/
+}
+
+.newsletter-export-button {
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 150px;
+    height: 50px;
+    padding: 0 10px;
+    background-color: #000000;
+    opacity: 0.5;
+    transition: background-color 0.1s ease;
+
+}
+
+.newsletter-export-button:hover {
+    background-color: #3d40ef;
+    opacity: 1;
+}
+
+.newsletter-export-button p {
+    /*background-color: #1b1eba;*/
+    align-self: center;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    color: #e4e1e1;
+}
