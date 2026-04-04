@@ -12,6 +12,10 @@ export const NewsletterView = () => {
         ) : (
             <div className={'newsletter-view-grid-container'}>
                 <EmailTable viewModel={viewModel}/>
+                <div className={'newsletter-export-container'}>
+                    <button className={'newsletter-export-button'}><p>Export Selected</p></button>
+                    <button className={'newsletter-export-button'}><p>Export All</p></button>
+                </div>
             </div>
         )}
 

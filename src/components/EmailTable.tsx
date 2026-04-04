@@ -1,8 +1,9 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {useNewsletterViewModel} from "../view-models/useNewsletterViewModel";
+import "../view-styles/NewsletterViewStyle.css"
 
 const columns: GridColDef[] = [
-    {field: "userId", headerName: "UserID", width: 180},
+    // {field: "userId", headerName: "UserID", width: 180},
     {field: "address", headerName: "Email Address", width: 180},
 ]
 
@@ -16,7 +17,7 @@ export const EmailTable = ({viewModel}: props) => {
     const {selectedEmails, selector, selectionModel, setSelectedEmails, setSelectionModel} = viewModel
 
     return (
-        <div>
+        <div className={'newsletter-view-grid'}>
             {selectedEmails ? <DataGrid
                 checkboxSelection={true}
                 autoHeight={true}

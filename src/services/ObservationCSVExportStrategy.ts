@@ -1,7 +1,7 @@
 import {ExportStrategy} from "./ExportStrategy";
 import {LatLng, Observation} from "../model/observations";
 
-export class CSVExportStrategy extends ExportStrategy {
+export class ObservationCSVExportStrategy extends ExportStrategy<Observation> {
     protected mime = "text/csv"
 
     constructor(observations: Observation[]) {
@@ -75,7 +75,7 @@ export class CSVExportStrategy extends ExportStrategy {
         ] as const;
 
         const header = columns.join(",")
-        const rows = this.observations.map(observation => {
+        const rows = this.data.map(observation => {
             const row = this.toCsvRow(observation)
             return columns.map(col => this.csvEscape(row[col])).join(",")
         })

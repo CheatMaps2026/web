@@ -1,4 +1,4 @@
-import {SubmitEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
+import {SubmitEvent, SyntheticEvent, useEffect, useLayoutEffect, useMemo, useState} from "react";
 import {Observation} from "../model/observations";
 import {FilterService, ObservationFilters} from "../services/FilterService";
 import {GridRowSelectionModel} from "@mui/x-data-grid";
@@ -21,7 +21,7 @@ export const useObservationTableViewModel = ({observations}: props) => {
             type: "include",
             ids: new Set(),
         });
-    useEffect(() => {
+    useLayoutEffect(() => {
         setModifiedObservations(observations); //sync modified when the source changes
     }, [observations]);
 
