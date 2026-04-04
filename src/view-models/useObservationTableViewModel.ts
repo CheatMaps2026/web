@@ -21,6 +21,7 @@ export const useObservationTableViewModel = ({observations}: props) => {
             type: "include",
             ids: new Set(),
         });
+
     useLayoutEffect(() => {
         setModifiedObservations(observations); //sync modified when the source changes
     }, [observations]);

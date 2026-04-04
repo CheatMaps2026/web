@@ -1,7 +1,8 @@
-import {useEffect, useLayoutEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Email} from "../model/emails";
 import {useApiClient} from "../providers/ApiClientProvider";
 import {GridRowSelectionModel} from "@mui/x-data-grid";
+import {EmailCSVExportStrategy} from "../services/EmailCSVExportStrategy";
 
 
 const mockEmails: Email[] = [
@@ -111,10 +112,8 @@ export type NewsletterError = {
     message: string;
 }
 
-
 export const useNewsletterViewModel = () => {
     const [emails, setEmails] = useState<Email[]>([]);
-    const [selectedEmails, setSelectedEmails] = useState<Email[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<NewsletterError | null>(null);
     const apiClient = useApiClient();
@@ -127,9 +126,8 @@ export const useNewsletterViewModel = () => {
         const loadEmails = async () => {
             setLoading(true);
             try {
-                const emails: Email[] = await apiClient.get('/email')
-                console.log("Emails from api", emails)
-                setEmails(mockEmails) //TODO make sure this is not mockEmails and is emails
+                const response: Email[] = await apiClient.get('/email')
+                setEmails(response)
             } catch (error) {
                 setError(error as any);
             } finally {
@@ -139,30 +137,48 @@ export const useNewsletterViewModel = () => {
         loadEmails()
     }, [])
 
-    useLayoutEffect(() => {
-        if (!emails) return
-        setSelectedEmails(emails);
-    }, [emails])
+
+    const selectedEmails = useMemo(() => {
+        if (selectionModel.type === "include") {
+            return emails.filter(email =>
+                selectionModel.ids.has(email.userId)
+            )
+
+        } else {
+            return emails.filter(email =>
+                !selectionModel.ids.has(email.userId)
+            )
+        }
+    }, [selectionModel, emails]);
+
+    console.log(selectedEmails)
 
     const selector = (model: GridRowSelectionModel) => {
         setSelectionModel(model);
     }
 
-    const exportSelection = () => {
+    const exportSelection = async () => {
         console.log("exporting selected emails")
-
-        setLoading(true);
+        if (selectedEmails.length === 0) return
+        const exportStrategy = new EmailCSVExportStrategy(selectedEmails);
+        const date = new Date();
+        exportStrategy.download(`CheatMaps-Newsletter-${date.toISOString()}.csv`)
     }
 
-    const exportAll = () => {
+    const exportAll = async () => {
         console.log("exporting all emails")
+        if (emails.length === 0) return
+        const exportStrategy = new EmailCSVExportStrategy(emails);
+        const date = new Date();
+        exportStrategy.download(`CheatMaps-Newsletter-${date.toISOString()}.csv`)
     }
 
     return {
         selector,
+        exportAll,
+        exportSelection,
         setSelectionModel,
         selectionModel,
-        setSelectedEmails,
         selectedEmails,
         emails,
         loading,

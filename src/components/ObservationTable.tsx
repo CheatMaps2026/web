@@ -1,7 +1,5 @@
 import {ExportType, useObservationTableViewModel} from "../view-models/useObservationTableViewModel";
-import {Observation} from "../model/observations";
 import {DataGrid, GridColDef} from '@mui/x-data-grid';
-import {useState} from "react";
 
 
 const columns: GridColDef[] = [
@@ -75,7 +73,6 @@ export const ObservationTable = ({viewModel}: props) => {
         selectionModel,
         selector,
         selectedObservations,
-        selectedFormat,
         exportData,
         setSelectedFormat
     } = viewModel
