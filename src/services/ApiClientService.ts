@@ -66,7 +66,22 @@ export class ApiClientService {
             throw normalizedError
         }
     }
+
+    async delete<T = void>(url: string): Promise<T> {
+        console.log("DELETE", url)
+        try {
+            const res = await this.axios.delete<T>(url)
+            return res.data;
+        } catch (error) {
+            const normalizedError = normalizeError(error)
+            console.error("Network error", normalizedError)
+            throw normalizedError
+        }
+    }
 }
+
+
+
 
 export type NormalizedAxiosError = {
     status: number,
