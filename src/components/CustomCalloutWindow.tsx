@@ -40,7 +40,10 @@ export const CustomCalloutWindow = ({observation, imagePress, apiClient}: Props)
                             </div>
                         </div>
                         <div className={"verification-controls"}>
-                            <button className={"not-cheatgrass"} onClick={() => labelNotCheatgrass(observation)}>
+                            <button className={"not-cheatgrass"} onClick={() => {
+                                alert(`Deleted observation ${observation.observationId}`)
+                                labelNotCheatgrass(observation)
+                            }}>
                                 Not cheatgrass
                             </button>
                             <button className={"maybe-cheatgrass"} onClick={() => labelMaybeCheatgrass(observation)}>

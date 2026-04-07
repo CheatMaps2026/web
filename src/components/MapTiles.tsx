@@ -1,9 +1,8 @@
 import {Observation} from "../model/observations";
-import {GoogleMap, InfoWindow, Marker, MarkerF, PolygonF, useLoadScript, OverlayView} from "@react-google-maps/api";
-import {Fragment, useEffect, useState} from "react";
+import {GoogleMap, Marker, PolygonF, useLoadScript, OverlayView} from "@react-google-maps/api";
+import {Fragment, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {CustomCalloutWindow} from "./CustomCalloutWindow";
 import {useNavigate} from "react-router";
-
 
 const verificationToColor: Record<number, string> = {
     0: "#3659e4",
@@ -20,18 +19,15 @@ type props = {
 
 export const MapTiles = ({observations, apiClient}: props) => {
     const navigate = useNavigate();
-
-    const [selectedObservation, setSelectedObservation] = useState<Observation | null>(null);
-
+    const [renderedObservations, setRenderedObservations] = useState<Observation[]>([]);
+    const mapRef = useRef<google.maps.Map | null>(null)
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: 'AIzaSyCbAVEkhkMf11mpQXOUFzmyhFCCo_fmu3M'
     })
 
     const [activeId, setActiveId] = useState<string | null>(null)
-    const [center, setCenter] = useState<{ lat: number, lng: number }>({
-        lat: 39.7392, lng:
-            -104.9903
-    })
+    const [center, setCenter] = useState<{ lat: number, lng: number }>({lat: 38.5458, lng: -106.9253})
+    const [viewport, setViewPort] = useState(0)
 
     useEffect(() => {
         if (!activeId) return
@@ -41,18 +37,49 @@ export const MapTiles = ({observations, apiClient}: props) => {
         setCenter(newCenter)
     }, [activeId, observations])
 
+    const handleMapLoad = (map: google.maps.Map) => {
+        mapRef.current = map;
+    }
+
+    const handleUnmount = () => {
+        mapRef.current = null;
+    }
+
+    const updateBoundsCheck = () => {
+        setViewPort(viewport + 1)
+    }
+
+    useLayoutEffect(() => {
+        if (!observations || observations.length === 0) {
+            setRenderedObservations([]);
+            return
+        }
+        const bounds = mapRef.current?.getBounds()
+        if (!bounds) {
+            setRenderedObservations(observations);
+            return
+        }
+        const nextRendered = observations.filter((observation) => {
+            const origin = observation.position.gpsOrigin
+            return bounds.contains({lat: origin.latitude, lng: origin.longitude})
+        })
+
+        setRenderedObservations(nextRendered);
+    }, [observations, viewport]);
+
 
     return (
         <div className='map-container'>
             {isLoaded ? (
                 <GoogleMap
+                    onLoad={handleMapLoad}
+                    onUnmount={handleUnmount}
                     onClick={() => setActiveId(null)}
                     onZoomChanged={() => setActiveId(null)} // optional
-                    zoom={13}
+                    zoom={10}
+                    onBoundsChanged={updateBoundsCheck}
                     center={center}
                     mapContainerStyle={{
-                        // width: '100%',
-                        // height: '100%',
                         height: '100%',
                         width: '100%',
                     }}
@@ -65,7 +92,7 @@ export const MapTiles = ({observations, apiClient}: props) => {
                         ],
                     }}
                 >
-                    {observations?.map((observation) => {
+                    {renderedObservations?.map((observation) => {
                         const origin = observation.position.gpsOrigin;
                         const path =
                             observation.position.coordinates?.map(({latitude, longitude}) => ({
@@ -79,7 +106,6 @@ export const MapTiles = ({observations, apiClient}: props) => {
                                 <Marker position={{lat: origin.latitude, lng: origin.longitude}}
                                         onClick={() => {
                                             setActiveId(observation.observationId)
-                                            setSelectedObservation(observation)
                                         }}
                                         icon={{
                                             path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
