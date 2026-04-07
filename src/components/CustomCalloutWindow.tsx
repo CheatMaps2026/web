@@ -13,7 +13,6 @@ export const CustomCalloutWindow = ({observation, imagePress, apiClient}: Props)
         apiClient: apiClient
     })
 
-    console.log(observation);
     return (
         <div className={"info-window-content"}>
             <div className={"info-window-card"}>
