@@ -26,7 +26,7 @@ export class FilterService {
     }
 
     byVerificationStatus(statusQuery: number): Observation[] {
-        if (!statusQueryRange.includes(statusQuery)) {
+        if (!this.statusQueryRange.includes(statusQuery)) {
             throw new Error("Unexpected status query value")
         }
         return this.observations.filter((observation) => observation.verificationRating == statusQuery)
