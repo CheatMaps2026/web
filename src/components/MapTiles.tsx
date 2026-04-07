@@ -29,7 +29,7 @@ export const MapTiles = ({observations, apiClient}: props) => {
     const [center, setCenter] = useState<{ lat: number, lng: number }>({lat: 38.5458, lng: -106.9253})
     const [viewport, setViewPort] = useState(0)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!activeId) return
         if (!observations || observations.length === 0) return
         const observation = observations.filter((obs) => obs.observationId === activeId)[0]
