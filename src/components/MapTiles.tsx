@@ -1,8 +1,10 @@
 import {Observation} from "../model/observations";
 import {GoogleMap, Marker, PolygonF, useLoadScript, OverlayView} from "@react-google-maps/api";
-import {Fragment, useEffect, useLayoutEffect, useRef, useState} from "react";
+import {Fragment, useLayoutEffect, useRef, useState} from "react";
 import {CustomCalloutWindow} from "./CustomCalloutWindow";
 import {useNavigate} from "react-router";
+import {useApiClient} from "../providers/ApiClientProvider";
+import {useMapViewModel} from "../view-models/useMapViewModel";
 
 const verificationToColor: Record<number, string> = {
     0: "#3659e4",
@@ -12,12 +14,13 @@ const verificationToColor: Record<number, string> = {
 }
 
 type props = {
-    observations: Observation[] | null,
-    apiClient: any
+    viewModel: ReturnType<typeof useMapViewModel>
 }
 
 
-export const MapTiles = ({observations, apiClient}: props) => {
+export const MapTiles = ({viewModel}: props) => {
+    const observations = viewModel.observations
+    const apiClient = useApiClient();
     const navigate = useNavigate();
     const [renderedObservations, setRenderedObservations] = useState<Observation[]>([]);
     const mapRef = useRef<google.maps.Map | null>(null)

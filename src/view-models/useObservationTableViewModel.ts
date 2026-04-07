@@ -1,18 +1,16 @@
-import {SubmitEvent, SyntheticEvent, useEffect, useLayoutEffect, useMemo, useState} from "react";
+import { SyntheticEvent,  useLayoutEffect, useMemo, useState} from "react";
 import {Observation} from "../model/observations";
 import {FilterService, ObservationFilters} from "../services/FilterService";
 import {GridRowSelectionModel} from "@mui/x-data-grid";
 import {exportRegistry} from "./exportRegistry";
 import {sanitize} from "../utils/manipulation";
-
-type props = {
-    observations: Observation[];
-}
+import {useObservationStoreContext} from "../providers/ObservationsStoreProvider";
 
 export type ExportType = "CSV" | "GEOJSON"
 const defaultExportType: ExportType = "CSV"
 
-export const useObservationTableViewModel = ({observations}: props) => {
+export const useObservationTableViewModel = () => {
+    const {observations} = useObservationStoreContext()
     const [modifiedObservations, setModifiedObservations] = useState<Observation[]>(observations);
     const [selectedFormat, setSelectedFormat] = useState<ExportType>(defaultExportType);
 
