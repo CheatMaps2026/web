@@ -51,6 +51,7 @@ export const useObservationTableViewModel = ({observations}: props) => {
         const verificationStr = data.get("verificationStatus") as string;
         const areaStr = data.get("estimatedArea") as string;
         const coverageStr = data.get("percentCoverage") as string;
+        const typeStr = data.get("observationType") as string;
 
         const filters: ObservationFilters = {
             start: startStr ? new Date(`${startStr}T00:00:00`) : undefined,
@@ -58,6 +59,7 @@ export const useObservationTableViewModel = ({observations}: props) => {
             verificationRating: verificationStr ? Number(verificationStr) : undefined,
             estimatedArea: areaStr ? Number(areaStr) : undefined,
             percentCoverage: coverageStr ? Number(coverageStr) : undefined,
+            type: typeStr === "POLYGON" || typeStr === "POINT" ? typeStr : undefined,
         };
 
         setModifiedObservations(filter.apply(filters));

@@ -56,6 +56,11 @@ const percentCoverageOptions = [
     {value: "100", label: "More than 50%"},
 ]
 
+const observationTypeOptions = [
+    {value: "POINT", label: "Point"},
+    {value: "POLYGON", label: "Polygon"},
+]
+
 
 const exportOptions = [
     {value: "CSV", label: "CSV"},
@@ -110,6 +115,14 @@ export const ObservationTable = ({viewModel}: props) => {
                             <label htmlFor={"percent-coverage"}>Percent Coverage (WIP)</label>
                             <select className={"form-select"} id={"percent-coverage"} name={"percentCoverage"}>
                                 {percentCoverageOptions.map((option, index) => (
+                                    <option key={index} value={option.value}>{option.label}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className={"filter-option"}>
+                            <label htmlFor={"estimated-area"}>Observation Type</label>
+                            <select className={"form-select"} id={"observation-type"} name={"observationType"}>
+                                {observationTypeOptions.map((option, index) => (
                                     <option key={index} value={option.value}>{option.label}</option>
                                 ))}
                             </select>

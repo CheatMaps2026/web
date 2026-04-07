@@ -1,16 +1,21 @@
 import {Observation} from "../model/observations";
 
+export type ObservationType = "POLYGON" | "POINT"
+
 export type ObservationFilters = {
     start?: Date;
     end?: Date;
     verificationRating?: number;
     estimatedArea?: number;
     percentCoverage?: number;
+    type?: ObservationType;
 }
 
 export class FilterService {
     constructor(private observations: Observation[]) {
     }
+
+    private statusQueryRange = [0, 1, 2, 3]
 
     //if end is not undefined or null, filter everything after from
     byDateRange(start: Date, end?: Date): Observation[] {
@@ -35,6 +40,13 @@ export class FilterService {
         return this.observations.filter((observation) => observation.percentCoverage == percentQuery)
     }
 
+    byObservationType(typeQuery: ObservationType) {
+        if (typeQuery === "POLYGON") {
+            return this.observations.filter((observation) => observation.position.coordinates.length > 1)
+        }
+        return this.observations.filter((observation) => observation.position.coordinates.length === 1)
+    }
+
     apply(filters: ObservationFilters) {
 
         if (filters.start || filters.end) {
@@ -53,9 +65,12 @@ export class FilterService {
             this.observations = this.byPercentCoverage(filters.percentCoverage)
         }
 
+        if (filters.type !== undefined) {
+            this.observations = this.byObservationType(filters.type)
+        }
+
         return this.observations
     }
 }
 
 
-const statusQueryRange = [0, 1, 2, 3] //unverified, no, yes, maybe
