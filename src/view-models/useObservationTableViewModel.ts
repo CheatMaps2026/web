@@ -1,4 +1,4 @@
-import { SyntheticEvent,  useLayoutEffect, useMemo, useState} from "react";
+import {SyntheticEvent, useLayoutEffect, useMemo, useState} from "react";
 import {Observation} from "../model/observations";
 import {FilterService, ObservationFilters} from "../services/FilterService";
 import {GridRowSelectionModel} from "@mui/x-data-grid";
@@ -57,7 +57,7 @@ export const useObservationTableViewModel = () => {
             verificationRating: verificationStr ? Number(verificationStr) : undefined,
             estimatedArea: areaStr ? Number(areaStr) : undefined,
             percentCoverage: coverageStr ? Number(coverageStr) : undefined,
-            type: typeStr === "POLYGON" || typeStr === "POINT" ? typeStr : undefined,
+            type: typeStr === "ALL" || typeStr === "POLYGON" || typeStr === "POINT" ? typeStr : undefined,
         };
 
         setModifiedObservations(filter.apply(filters));

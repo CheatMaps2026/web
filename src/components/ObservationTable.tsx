@@ -57,6 +57,7 @@ const percentCoverageOptions = [
 ]
 
 const observationTypeOptions = [
+    {value: "ALL", label: "All"},
     {value: "POINT", label: "Point"},
     {value: "POLYGON", label: "Polygon"},
 ]

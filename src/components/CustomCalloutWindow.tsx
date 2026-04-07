@@ -4,11 +4,11 @@ import {useVerificationFunctions} from "../view-models/useVerificationFunctions"
 
 type Props = {
     observation: Observation,
-    imagePress: () => void,
+    imageClick: () => void,
     apiClient: any
 }
 
-export const CustomCalloutWindow = ({observation, imagePress, apiClient}: Props) => {
+export const CustomCalloutWindow = ({observation, imageClick, apiClient}: Props) => {
     const {labelNotCheatgrass, labelMaybeCheatgrass, labelYesCheatgrass} = useVerificationFunctions({
         apiClient: apiClient
     })
@@ -28,7 +28,7 @@ export const CustomCalloutWindow = ({observation, imagePress, apiClient}: Props)
                         <img alt={`observation${observation.observationId}`}
                              src={observation.image}
                              className="info-window-img"
-                             onClick={imagePress}/>
+                             onClick={imageClick}/>
                     </div>
                     <div className={"info-window-actions-column"}>
                         <div className={"info-window-description"}>

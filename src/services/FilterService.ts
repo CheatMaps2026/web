@@ -1,6 +1,6 @@
 import {Observation} from "../model/observations";
 
-export type ObservationType = "POLYGON" | "POINT"
+export type ObservationType = "POLYGON" | "POINT" | "ALL"
 
 export type ObservationFilters = {
     start?: Date;
@@ -41,10 +41,14 @@ export class FilterService {
     }
 
     byObservationType(typeQuery: ObservationType) {
-        if (typeQuery === "POLYGON") {
-            return this.observations.filter((observation) => observation.position.coordinates.length > 1)
+        switch (typeQuery) {
+            case "POLYGON":
+                return this.observations.filter((observation) => observation.position.coordinates.length > 1)
+            case "ALL":
+                return this.observations.filter((observation) => observation.position.coordinates.length >= 1)
+            case "POINT":
+                return this.observations.filter((observation) => observation.position.coordinates.length === 1)
         }
-        return this.observations.filter((observation) => observation.position.coordinates.length === 1)
     }
 
     apply(filters: ObservationFilters) {
