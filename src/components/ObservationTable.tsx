@@ -19,7 +19,17 @@ const columns: GridColDef[] = [
     },
     {field: "percentCoverage", headerName: "% Coverage", width: 130},
     {field: "verificationRating", headerName: "Rating", width: 110},
-    {field: "estimatedArea", headerName: "Area", width: 130},
+    {
+        field: "estimatedArea",
+        headerName: "Area",
+        width: 130,
+        valueGetter: (_, row) => {
+            if (row.estimatedArea === 0) {
+                return "N/A"
+            }
+            return row.estimatedArea
+        }
+    },
     {
         field: "timestamp",
         headerName: "Date made",
@@ -39,11 +49,12 @@ const verificationRatingOptions = [
 
 const estimatedAreaOptions = [
     {value: "", label: "No filter"},
-    {value: "1", label: "1m^2"},
-    {value: "5", label: "5m^2"},
-    {value: "10", label: "10m^2"},
-    {value: "15", label: "15m^2"},
-    {value: "25", label: "25m^2"},
+    {value: "1", label: "1 square meter"},
+    {value: "5", label: "5 square meters"},
+    {value: "10", label: "10 square meters"},
+    {value: "15", label: "15 square meters"},
+    {value: "25", label: "25 square meters"},
+    {value: "30", label: "Greater than 25 square meters"},
 
 ]
 
@@ -57,6 +68,7 @@ const percentCoverageOptions = [
 ]
 
 const observationTypeOptions = [
+    {value: "ALL", label: "All"},
     {value: "POINT", label: "Point"},
     {value: "POLYGON", label: "Polygon"},
 ]
@@ -103,7 +115,7 @@ export const ObservationTable = ({viewModel}: props) => {
                             </select>
                         </div>
                         <div className={"filter-option"}>
-                            <label htmlFor={"estimated-area"}>Estimated Area (WIP)</label>
+                            <label htmlFor={"estimated-area"}>Estimated Area</label>
                             <select className={"form-select"} id={"estimated-area"} name={"estimatedArea"}>
                                 {estimatedAreaOptions.map((option, index) => (
                                     <option key={index} value={option.value}>{option.label}</option>
@@ -112,7 +124,7 @@ export const ObservationTable = ({viewModel}: props) => {
                         </div>
 
                         <div className={"filter-option"}>
-                            <label htmlFor={"percent-coverage"}>Percent Coverage (WIP)</label>
+                            <label htmlFor={"percent-coverage"}>Percent Coverage</label>
                             <select className={"form-select"} id={"percent-coverage"} name={"percentCoverage"}>
                                 {percentCoverageOptions.map((option, index) => (
                                     <option key={index} value={option.value}>{option.label}</option>

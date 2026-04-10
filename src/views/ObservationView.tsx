@@ -1,10 +1,9 @@
 import "../view-styles/ObservationsViewStyle.css";
 import {ObservationTable} from "../components/ObservationTable";
-import {useMapViewModel} from "../view-models/useMapViewModel";
-import {useState} from "react";
+import {useObservationTableViewModel} from "../view-models/useObservationTableViewModel";
 
 export const ObservationView = () => {
-    const {tableModel} = useMapViewModel();
+    const tableModel = useObservationTableViewModel()
 
     return (
         <div className="observation-view-root">
