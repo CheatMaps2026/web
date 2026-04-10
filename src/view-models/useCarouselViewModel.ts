@@ -16,21 +16,22 @@ export const useCarouselViewModel = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [daysBack, setDaysBack] = useState(0);
 
+    useLayoutEffect(() => {
+        if (loading) return;
+        setUnverifiedObservations(observations.filter((observation) => observation.verificationRating == Verification.UNVERIFIED));
+        console.log("unverifiedObservations", unverifiedObservations.length);
+    }, [observations]);
 
     useLayoutEffect(() => {
         if (loading) return;
         setIsVerified(
             unverifiedObservations.every(
-                (observation) => observation.verificationRating !== Verification.UNVERIFIED
+                (observation) => observation.verificationRating !== Verification.NEGATIVE
             )
         );
     }, [loading, unverifiedObservations]);
 
-    useLayoutEffect(() => {
-        if (loading) return;
-        setUnverifiedObservations(observations.filter((observation) => observation.verificationRating == Verification.UNVERIFIED))
-        console.log("unverifiedObservations", unverifiedObservations.length);
-    }, [observations]);
+    console.log(isVerified)
 
 
     const filteredObservations = useMemo(() => {
