@@ -65,7 +65,9 @@ export const CarouselView = () => {
                 <div className="verification-view">
                     <div className="instructions-container">
                         <h1>All observations pending review have been verified</h1>
+                        <h2>Use the slider below to filter observations by time</h2>
                     </div>
+
 
                     <div className="slidecontainer">
                         <label className="slider-label" htmlFor="daysRange">

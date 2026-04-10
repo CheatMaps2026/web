@@ -37,6 +37,14 @@
     color: white;
 }
 
+.instructions-container h2 {
+    font-size: 1.00rem;
+    line-height: 1.2;
+    margin: 0;
+    text-align: center;
+    color: white;
+}
+
 .carousel-shell {
     display: flex;
     flex-direction: row;
