@@ -1,11 +1,14 @@
 import  {createContext, useContext, useMemo} from "react"
 import {ApiClientService} from "../services/ApiClientService";
+import {getEnv} from "../../env";
 
 
 const ApiContext = createContext<ApiClientService | null>(null)
 export const ApiClientProvider = ({children}: { children: React.ReactNode }) => {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
-    const apiKey = import.meta.env.VITE_API_KEY
+    const { VITE_API_BASE_URL, VITE_API_KEY } = getEnv();
+
+    const baseUrl = VITE_API_BASE_URL
+    const apiKey =VITE_API_KEY
     const value = useMemo(() => {
         return new ApiClientService({baseUrl, apiKey})
     }, [])

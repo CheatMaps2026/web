@@ -1,6 +1,5 @@
 import {Observation} from "../model/observations";
 import "../view-styles/VerificationViewStyle.css";
-import React from "react";
 
 const verificationMap: Record<number, string> = {
     0: "UNVERIFIED",
