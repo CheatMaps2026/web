@@ -3,6 +3,9 @@ import {Observation} from "../model/observations";
 type Props = {
     apiClient: any
 }
+
+export enum Verification { UNVERIFIED = 0, NEGATIVE = 1, POSITIVE = 2, MAYBE = 3 }
+
 export const useVerificationFunctions = ({apiClient}: Props) => {
 
     const labelNotCheatgrass = async (observation: Observation) => {
@@ -33,6 +36,7 @@ export const useVerificationFunctions = ({apiClient}: Props) => {
         const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
         console.log(response)
     }
+
 
     return {
         labelNotCheatgrass,

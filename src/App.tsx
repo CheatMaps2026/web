@@ -3,7 +3,7 @@ import {ApiClientProvider} from "./providers/ApiClientProvider";
 import {BrowserRouter, Route, Routes,} from "react-router-dom";
 import {NavBar} from "./components/NavBar";
 import {HomeView} from "./views/HomeView";
-import {VerificationView} from "./views/VerificationView";
+import {CarouselView} from "./views/CarouselView";
 import {MapView} from "./views/MapView";
 import {ContactView} from "./views/ContactView";
 import {NewsletterView} from "./views/NewsletterView";
@@ -23,7 +23,7 @@ export const App = () => {
                     <Routes>
                         <Route path={"/"} element={<HomeView/>}/>
                         <Route path={"/image/:observationId"} element={<FullscreenImage/>}/>
-                        <Route path={"/verification"} element={<VerificationView/>}/>
+                        <Route path={"/verification"} element={<CarouselView/>}/>
                         <Route path={"/observations"} element={<ObservationView/>}/>
                         <Route path={"/map"} element={<MapView/>}/>
                         <Route path={"/contact"} element={<ContactView/>}/>
