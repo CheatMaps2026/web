@@ -20,10 +20,15 @@ jest.mock("../../src/providers/ApiClientProvider", () => ({
     })),
 }));
 
-jest.mock("../../src/view-models/useVerificationFunctions", () => {
-    useVerificationFunctions: jest.fn()
-})
-
+jest.mock("../../src/view-models/useVerificationFunctions", () => ({
+    useVerificationFunctions: jest.fn(),
+    Verification: {
+        UNVERIFIED: 0,
+        NEGATIVE: 1,
+        POSITIVE: 2,
+        MAYBE: 3,
+    },
+}));
 
 export const makeFakeObservation = (index: number): Observation => ({
     observationId: `observation-${index}`,
@@ -91,17 +96,52 @@ describe("useCarouselViewModel", () => {
         });
     });
 
+    test("prev(), next() modify activeIndex", async () => {
+        const {result} = renderHook(()=> useCarouselViewModel())
+        expect(result.current.activeIndex).toBe(0)
+        act(()=>{
+            result.current.next()
+        })
+
+        expect(result.current.activeIndex).toBe(1)
+
+        act(()=>{
+            result.current.prev()
+        })
+
+        expect(result.current.activeIndex).toBe(0)
+
+    })
+
     test("Unverified observations takes precedence over filteredObservations", async () => {
         const {result} = renderHook(() => useCarouselViewModel())
         expect(result.current.currentObservations.length).toBe(25); //out of 100 observations, there are 25 unfiltered. Current should equal unfiltered
     })
 
-    test("Verifying observations removes them from unverifiedObservations", async () => {
-        const {result} = renderHook(() => useCarouselViewModel())
+    describe("verifyActiveObservation removes them from unverifiedObservations",  () => {
+        test("verifyActiveObservation mockLabelNotCheatgrass", async () => {
+            const {result} = renderHook(() => useCarouselViewModel())
+            await act(async () => {
+                await result.current.verifyActiveObservation(mockLabelNotCheatgrass)
+            })
+            expect(result.current.currentObservations.length).toBe(24)
+        })
 
-        await act(async () => {
-            await result.current.verifyActiveObservation(mockLabelNotCheatgrass)
+        test("verifyActiveObservation mockLabelMaybeCheatGrass", async () => {
+            const {result} = renderHook(() => useCarouselViewModel())
+            await act(async () => {
+                await result.current.verifyActiveObservation(mockLabelMaybeCheatgrass)
+            })
+            expect(result.current.currentObservations.length).toBe(24)
+        })
+        test("verifyActiveObservation mockLabelYesCheatgrassl", async () => {
+            const {result} = renderHook(() => useCarouselViewModel())
+            await act(async () => {
+                await result.current.verifyActiveObservation(mockLabelYesCheatgrass)
+            })
             expect(result.current.currentObservations.length).toBe(24)
         })
     })
+
+
 })

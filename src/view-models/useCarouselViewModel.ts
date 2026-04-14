@@ -78,12 +78,8 @@ export const useCarouselViewModel = () => {
         observationToPatch: Observation,
         verificationRating: Verification
     ) => {
-        setUnverifiedObservations((prev) =>
-            prev.map((observation) =>
-                observation.observationId === observationToPatch.observationId
-                    ? {...observation, verificationRating}
-                    : observation
-            )
+        setUnverifiedObservations(
+            (prev: Observation[]) => prev.filter((observation) => observation.observationId != observationToPatch.observationId)
         );
     }
 
