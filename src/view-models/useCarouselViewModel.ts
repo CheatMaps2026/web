@@ -2,7 +2,7 @@ import {useObservationStoreContext} from "../providers/ObservationsStoreProvider
 import {useLayoutEffect, useMemo, useState} from "react";
 import {Observation} from "../model/observations";
 import {useApiClient} from "../providers/ApiClientProvider";
-import {useVerificationFunctions, Verification} from "./useVerificationFunctions";
+import {useVerificationFunctions, Verification, VerificationMap} from "./useVerificationFunctions";
 
 
 export const useCarouselViewModel = () => {
@@ -90,10 +90,12 @@ export const useCarouselViewModel = () => {
         console.log("activeObservation", observation);
         await verifyFn(observation);
 
-        let verificationRating = observation.verificationRating;
+        let verificationRating = observation.verificationRating as Verification;
         if (verifyFn === labelNotCheatgrass) verificationRating = Verification.NEGATIVE;
         if (verifyFn === labelMaybeCheatgrass) verificationRating = Verification.MAYBE;
         if (verifyFn === labelYesCheatgrass) verificationRating = Verification.POSITIVE;
+
+        alert(`Verified as ${VerificationMap[verificationRating]} cheatgrass`);
 
         patchActiveObservationStatus(observation, verificationRating);
     }

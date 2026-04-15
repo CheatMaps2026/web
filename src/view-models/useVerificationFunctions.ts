@@ -6,6 +6,14 @@ type Props = {
 
 export enum Verification { UNVERIFIED = 0, NEGATIVE = 1, POSITIVE = 2, MAYBE = 3 }
 
+export const VerificationMap: Record<Verification, string> = {
+    0: "Unverified",
+    1: "Negative",
+    2: "Positive",
+    3: "Maybe"
+}
+
+
 export const useVerificationFunctions = ({apiClient}: Props) => {
 
     const labelNotCheatgrass = async (observation: Observation) => {
