@@ -13,6 +13,10 @@ export const CustomCalloutWindow = ({observation, imageClick, apiClient}: Props)
         apiClient: apiClient
     })
 
+    const getDate = (timestamp: number) => {
+        return new Date(timestamp).toString();
+    }
+
     return (
         <div className={"info-window-content"}>
             <div className={"info-window-card"}>
@@ -20,6 +24,9 @@ export const CustomCalloutWindow = ({observation, imageClick, apiClient}: Props)
                     <h3>{observation.position.coordinates!.length > 1 ? `Polygon Observation` : `Point Observation`}</h3>
                     <p>
                         ID: {observation.observationId}
+                    </p>
+                    <p>
+                        Date made: {getDate(observation.timestamp)}
                     </p>
                 </div>
 
