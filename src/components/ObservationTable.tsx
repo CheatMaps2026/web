@@ -17,11 +17,17 @@ const columns: GridColDef[] = [
         width: 120,
         valueGetter: (_, row) => row.position.gpsOrigin.longitude,
     },
-    {field: "percentCoverage", headerName: "% Coverage", width: 130},
-    {field: "verificationRating", headerName: "Rating", width: 110},
+    {
+        field: "percentCoverage",
+        headerName: "% Coverage", width: 130
+    },
+    {
+        field: "verificationRating",
+        headerName: "Rating", width: 110
+    },
     {
         field: "estimatedArea",
-        headerName: "Area",
+        headerName: "Area (square meters)",
         width: 130,
         valueGetter: (_, row) => {
             if (row.estimatedArea === 0) {
@@ -156,7 +162,7 @@ export const ObservationTable = ({viewModel}: props) => {
 
                     <button type={"submit"} onClick={exportData}
                             disabled={selectedObservations.length == 0}>
-                        Export
+                        {selectedObservations.length === 0 ? "No observations selected" : "Export"}
                     </button>
 
                 </div> :
