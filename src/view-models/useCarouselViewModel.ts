@@ -12,26 +12,9 @@ export const useCarouselViewModel = () => {
         apiClient: apiClient
     })
     const [unverifiedObservations, setUnverifiedObservations] = useState<Observation[]>([]);
-    const [isVerified, setIsVerified] = useState<boolean>(false);
+    const isVerified = unverifiedObservations.length === 0;
     const [activeIndex, setActiveIndex] = useState(0);
     const [daysBack, setDaysBack] = useState(0);
-
-    useLayoutEffect(() => {
-        if (loading) return;
-        setUnverifiedObservations(observations.filter((observation) => observation.verificationRating == Verification.UNVERIFIED));
-        console.log("unverifiedObservations", unverifiedObservations.length);
-    }, [observations]);
-
-    useLayoutEffect(() => {
-        if (loading) return;
-        setIsVerified(
-            unverifiedObservations.every(
-                (observation) => observation.verificationRating !== Verification.NEGATIVE
-            )
-        );
-    }, [loading, unverifiedObservations]);
-
-    console.log(isVerified)
 
 
     const filteredObservations = useMemo(() => {
@@ -45,9 +28,25 @@ export const useCarouselViewModel = () => {
         });
     }, [observations, daysBack]);
 
+
     const currentObservations = useMemo(() => {
-        return isVerified ? filteredObservations : unverifiedObservations;
-    }, [isVerified, filteredObservations, unverifiedObservations]);
+        return unverifiedObservations.length > 0
+            ? unverifiedObservations
+            : filteredObservations;
+    }, [unverifiedObservations, filteredObservations]);
+
+
+    useLayoutEffect(() => {
+        if (loading) return;
+
+        const unverified = observations.filter(
+            (observation) => observation.verificationRating === Verification.UNVERIFIED
+        );
+
+        console.log("Number unverified =", unverified.length);
+        setUnverifiedObservations(unverified);
+    }, [loading, observations]);
+
 
     const activeObservation = currentObservations[activeIndex];
 
@@ -79,12 +78,8 @@ export const useCarouselViewModel = () => {
         observationToPatch: Observation,
         verificationRating: Verification
     ) => {
-        setUnverifiedObservations((prev) =>
-            prev.map((observation) =>
-                observation.observationId === observationToPatch.observationId
-                    ? {...observation, verificationRating}
-                    : observation
-            )
+        setUnverifiedObservations(
+            (prev: Observation[]) => prev.filter((observation) => observation.observationId != observationToPatch.observationId)
         );
     }
 
