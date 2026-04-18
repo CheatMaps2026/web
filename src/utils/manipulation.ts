@@ -2,7 +2,7 @@ import {Observation} from "../model/observations";
 
 
 export const sanitize = (observation: Observation): Observation => {
-    let notes = observation.notes.replaceAll("'", '').replaceAll('"', '')
+    let notes = observation.notes?.replaceAll("'", '').replaceAll('"', '')
     notes = '"' + notes + '"'
     return {...observation, notes: notes}
 }

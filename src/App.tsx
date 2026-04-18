@@ -16,7 +16,7 @@ export const App = () => {
     return (
         <ApiClientProvider>
             <ObservationsStoreProvider>
-                <BrowserRouter>
+                <BrowserRouter basename={"/web"}>
                     <header className="app-header">
                         <NavBar/>
                     </header>

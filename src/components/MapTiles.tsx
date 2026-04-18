@@ -93,7 +93,6 @@ export const MapTiles = ({viewModel}: props) => {
                             <CustomCalloutWindow observation={viewModel.activeObservation}
                                                  imageClick={viewModel.imageClick}
                                                  apiClient={viewModel.apiClient}/>
-
                         </div>
                     </OverlayView>}
 
