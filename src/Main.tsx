@@ -7,7 +7,6 @@ import { configureAmplify } from './utils/amplifyConfig';
 
 configureAmplify();
 
-
 const rootElement = document.getElementById('root')
 
 if (rootElement) {

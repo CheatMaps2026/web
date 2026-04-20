@@ -1,5 +1,6 @@
 import axios, {AxiosInstance, AxiosError} from "axios";
 import {Observation} from "../model/observations";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 type options = {
     baseUrl: string
@@ -46,7 +47,12 @@ export class ApiClientService {
     async post<T>(url: string, body?: unknown): Promise<T> {
         console.log("POST", url)
         try {
-            const res = await this.axios.post<T>(url, body)
+            const session = await fetchAuthSession();
+            const token = session.tokens?.idToken?.toString();
+
+            const res = await this.axios.post<T>(url, body, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
             return res.data;
         } catch (error) {
             const normalizedError = normalizeError(error)
@@ -58,7 +64,29 @@ export class ApiClientService {
     async patch<T>(url: string, body?: unknown): Promise<T> {
         console.log("PATCH", url)
         try {
-            const res = await this.axios.patch<T>(url, body)
+            const session = await fetchAuthSession();
+            const token = session.tokens?.idToken?.toString();
+            
+            const res = await this.axios.patch<T>(url, body, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            return res.data;
+        } catch (error) {
+            const normalizedError = normalizeError(error)
+            console.error("Network error", normalizedError)
+            throw normalizedError
+        }
+    }
+
+    async delete<T = void>(url: string): Promise<T> {
+        console.log("DELETE", url)
+        try {
+            const session = await fetchAuthSession();
+            const token = session.tokens?.idToken?.toString();
+            
+            const res = await this.axios.delete<T>(url, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
             return res.data;
         } catch (error) {
             const normalizedError = normalizeError(error)
@@ -67,6 +95,9 @@ export class ApiClientService {
         }
     }
 }
+
+
+
 
 export type NormalizedAxiosError = {
     status: number,

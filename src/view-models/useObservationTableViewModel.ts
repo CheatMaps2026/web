@@ -1,18 +1,16 @@
-import {SubmitEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
+import {SyntheticEvent, useLayoutEffect, useMemo, useState} from "react";
 import {Observation} from "../model/observations";
 import {FilterService, ObservationFilters} from "../services/FilterService";
 import {GridRowSelectionModel} from "@mui/x-data-grid";
 import {exportRegistry} from "./exportRegistry";
 import {sanitize} from "../utils/manipulation";
-
-type props = {
-    observations: Observation[];
-}
+import {useObservationStoreContext} from "../providers/ObservationsStoreProvider";
 
 export type ExportType = "CSV" | "GEOJSON"
 const defaultExportType: ExportType = "CSV"
 
-export const useObservationTableViewModel = ({observations}: props) => {
+export const useObservationTableViewModel = () => {
+    const {observations} = useObservationStoreContext()
     const [modifiedObservations, setModifiedObservations] = useState<Observation[]>(observations);
     const [selectedFormat, setSelectedFormat] = useState<ExportType>(defaultExportType);
 
@@ -21,7 +19,8 @@ export const useObservationTableViewModel = ({observations}: props) => {
             type: "include",
             ids: new Set(),
         });
-    useEffect(() => {
+
+    useLayoutEffect(() => {
         setModifiedObservations(observations); //sync modified when the source changes
     }, [observations]);
 
@@ -50,6 +49,7 @@ export const useObservationTableViewModel = ({observations}: props) => {
         const verificationStr = data.get("verificationStatus") as string;
         const areaStr = data.get("estimatedArea") as string;
         const coverageStr = data.get("percentCoverage") as string;
+        const typeStr = data.get("observationType") as string;
 
         const filters: ObservationFilters = {
             start: startStr ? new Date(`${startStr}T00:00:00`) : undefined,
@@ -57,6 +57,7 @@ export const useObservationTableViewModel = ({observations}: props) => {
             verificationRating: verificationStr ? Number(verificationStr) : undefined,
             estimatedArea: areaStr ? Number(areaStr) : undefined,
             percentCoverage: coverageStr ? Number(coverageStr) : undefined,
+            type: typeStr === "ALL" || typeStr === "POLYGON" || typeStr === "POINT" ? typeStr : undefined,
         };
 
         setModifiedObservations(filter.apply(filters));

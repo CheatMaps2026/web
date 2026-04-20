@@ -15,7 +15,7 @@ export type Observation = {
     userId: string,
     observationId: string,
     position: {
-        coordinates?: LatLng[],
+        coordinates: LatLng[],
         gpsOrigin: OriginMarker
     },
     notes: string,

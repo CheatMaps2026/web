@@ -3,15 +3,16 @@ import {Observation} from "../model/observations";
 type Props = {
     apiClient: any
 }
+
+export enum Verification { UNVERIFIED = 0, NEGATIVE = 1, POSITIVE = 2, MAYBE = 3 }
+
 export const useVerificationFunctions = ({apiClient}: Props) => {
 
     const labelNotCheatgrass = async (observation: Observation) => {
         const {userId, observationId} = observation
-        observation.verificationRating = 1 //Set object value here: causes color change on frontend
-        const body = {verificationRating: 1}
 
-        console.log("Labelling as not")
-        const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
+        console.log("Deleting Observation")
+        const response = await apiClient.delete(`/observation/${userId}/${observationId}`)
         console.log(response)
     }
 
@@ -35,6 +36,7 @@ export const useVerificationFunctions = ({apiClient}: Props) => {
         const response = await apiClient.patch(`/observation/${userId}/${observationId}/verification`, body)
         console.log(response)
     }
+
 
     return {
         labelNotCheatgrass,

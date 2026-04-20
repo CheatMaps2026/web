@@ -1,10 +1,8 @@
-import {Observation} from "../model/observations";
-
-export abstract class ExportStrategy {
+export abstract class ExportStrategy<T> {
     protected abstract mime: string
 
-    constructor(protected observations: Observation[]) {
-        this.observations = observations;
+    constructor(protected data: T[]) {
+        this.data = data;
     }
 
     download(filename: string) {

@@ -1,19 +1,20 @@
 import {Observation} from "../model/observations";
 import "../view-styles/MapViewStyle.css"
 import {useVerificationFunctions} from "../view-models/useVerificationFunctions";
+import { useAuthState } from "../hooks/useAuthState";
 
 type Props = {
     observation: Observation,
-    imagePress: () => void,
+    imageClick: () => void,
     apiClient: any
 }
 
-export const CustomCalloutWindow = ({observation, imagePress, apiClient}: Props) => {
+export const CustomCalloutWindow = ({observation, imageClick, apiClient}: Props) => {
+    const authState = useAuthState()
     const {labelNotCheatgrass, labelMaybeCheatgrass, labelYesCheatgrass} = useVerificationFunctions({
         apiClient: apiClient
     })
 
-    console.log(observation);
     return (
         <div className={"info-window-content"}>
             <div className={"info-window-card"}>
@@ -29,25 +30,33 @@ export const CustomCalloutWindow = ({observation, imagePress, apiClient}: Props)
                         <img alt={`observation${observation.observationId}`}
                              src={observation.image}
                              className="info-window-img"
-                             onClick={imagePress}/>
+                             onClick={imageClick}/>
                     </div>
-                    <div className={"info-window-description"}>
-                        <div className={"info-window-info-container"}>
-                            <p>notes: {observation.notes}</p>
-                            <p>estimated area: {observation.estimatedArea} square meters</p>
-                            <p>percent coverage: {observation.percentCoverage}%</p>
+                    <div className={"info-window-actions-column"}>
+                        <div className={"info-window-description"}>
+                            <div className={"info-window-info-container"}>
+                                <p>notes: {observation.notes}</p>
+                                <p>estimated area: {observation.estimatedArea} square meters</p>
+                                <p>percent coverage: {observation.percentCoverage}%</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={"verification-controls"}>
-                        <button className={"not-cheatgrass"} onClick={() => labelNotCheatgrass(observation)}>
-                            Not cheatgrass
-                        </button>
-                        <button className={"maybe-cheatgrass"} onClick={() => labelMaybeCheatgrass(observation)}>
-                            Maybe cheatgrass
-                        </button>
-                        <button className={"cheatgrass"} onClick={() => labelYesCheatgrass(observation)}>
-                            Cheatgrass
-                        </button>
+
+                        {authState === 'authorized' && (
+                        <div className={"verification-controls"}>
+                            <button className={"not-cheatgrass"} onClick={() => {
+                                alert(`Deleted observation ${observation.observationId}`)
+                                labelNotCheatgrass(observation)
+                            }}>
+                                Not cheatgrass
+                            </button>
+                            <button className={"maybe-cheatgrass"} onClick={() => labelMaybeCheatgrass(observation)}>
+                                Maybe cheatgrass
+                            </button>
+                            <button className={"cheatgrass"} onClick={() => labelYesCheatgrass(observation)}>
+                                Cheatgrass
+                            </button>
+                        </div>
+                        )}
                     </div>
                 </div>
             </div>

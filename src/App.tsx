@@ -3,9 +3,8 @@ import {ApiClientProvider} from "./providers/ApiClientProvider";
 import {BrowserRouter, Route, Routes,} from "react-router-dom";
 import {NavBar} from "./components/NavBar";
 import {HomeView} from "./views/HomeView";
-import {VerificationView} from "./views/VerificationView";
+import {CarouselView} from "./views/CarouselView";
 import {MapView} from "./views/MapView";
-import {AboutView} from "./views/AboutView";
 import {ContactView} from "./views/ContactView";
 import {NewsletterView} from "./views/NewsletterView";
 import {LoginView} from "./views/LoginView";
@@ -16,29 +15,10 @@ import { useEffect } from 'react';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { Hub } from 'aws-amplify/utils';
 import { signInWithRedirect } from 'aws-amplify/auth';
-import { ProtectedRoute, VerifierRoute } from './guards/ProtectedRoute';
+import { VerifierRoute } from './guards/ProtectedRoute';
+import {ObservationView} from "./views/ObservationView";
 
 export const App = () => {
-
-    useEffect(() => {
-  
-  // Listen for auth events
-  const unsubscribe = Hub.listen('auth', ({ payload }) => {
-    console.log('🔔 Auth event:', payload.event);
-    if (payload.event === 'signedIn') {
-        console.log('✅ User signed in!');
-    }
-    if (payload.event === 'signInWithRedirect') {
-        console.log('🔄 Processing redirect...');
-    }
-    if (payload.event === 'signInWithRedirect_failure') {
-        console.log('❌ Redirect failed:', payload.data);
-    }
-});
-
-  return unsubscribe;
-}, []);
-
 
     return (
         <ApiClientProvider>
@@ -52,10 +32,10 @@ export const App = () => {
                         <Route path={"/image/:observationId"} element={<FullscreenImage/>}/>
                         <Route path={"/verification"} element={
                             <VerifierRoute>
-                                <VerificationView/>
+                                <CarouselView/>
                             </VerifierRoute>}/>
+                        <Route path={"/observations"} element={<ObservationView/>}/>
                         <Route path={"/map"} element={<MapView/>}/>
-                        <Route path={"/about"} element={<AboutView/>}/>
                         <Route path={"/contact"} element={<ContactView/>}/>
                         <Route path={"/newsletter"} element={<NewsletterView/>}/>
                         <Route path={"/login"} element={<LoginView/>}/>

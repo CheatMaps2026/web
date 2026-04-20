@@ -1,16 +1,21 @@
 import {Observation} from "../model/observations";
 
+export type ObservationType = "POLYGON" | "POINT" | "ALL"
+
 export type ObservationFilters = {
     start?: Date;
     end?: Date;
     verificationRating?: number;
     estimatedArea?: number;
     percentCoverage?: number;
+    type?: ObservationType;
 }
 
 export class FilterService {
     constructor(private observations: Observation[]) {
     }
+
+    private statusQueryRange = [0, 1, 2, 3]
 
     //if end is not undefined or null, filter everything after from
     byDateRange(start: Date, end?: Date): Observation[] {
@@ -21,7 +26,7 @@ export class FilterService {
     }
 
     byVerificationStatus(statusQuery: number): Observation[] {
-        if (!statusQueryRange.includes(statusQuery)) {
+        if (!this.statusQueryRange.includes(statusQuery)) {
             throw new Error("Unexpected status query value")
         }
         return this.observations.filter((observation) => observation.verificationRating == statusQuery)
@@ -33,6 +38,17 @@ export class FilterService {
 
     byPercentCoverage(percentQuery: number) {
         return this.observations.filter((observation) => observation.percentCoverage == percentQuery)
+    }
+
+    byObservationType(typeQuery: ObservationType) {
+        switch (typeQuery) {
+            case "POLYGON":
+                return this.observations.filter((observation) => observation.position.coordinates.length > 1)
+            case "ALL":
+                return this.observations.filter((observation) => observation.position.coordinates.length >= 1)
+            case "POINT":
+                return this.observations.filter((observation) => observation.position.coordinates.length === 1)
+        }
     }
 
     apply(filters: ObservationFilters) {
@@ -53,9 +69,12 @@ export class FilterService {
             this.observations = this.byPercentCoverage(filters.percentCoverage)
         }
 
+        if (filters.type !== undefined) {
+            this.observations = this.byObservationType(filters.type)
+        }
+
         return this.observations
     }
 }
 
 
-const statusQueryRange = [0, 1, 2, 3] //unverified, no, yes, maybe

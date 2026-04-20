@@ -15,7 +15,7 @@ type GeoJSONFeatureCollection = {
     features: GeoJSONFeature[]
 }
 
-export class GeoJSONExportStrategy extends ExportStrategy {
+export class GeoJSONExportStrategy extends ExportStrategy<Observation> {
     protected mime: string = "application/geo+json"
 
     constructor(observations: Observation[]) {
@@ -66,7 +66,7 @@ export class GeoJSONExportStrategy extends ExportStrategy {
     private observationsToGeoJSON(): GeoJSONFeatureCollection {
         return {
             type: "FeatureCollection",
-            features: this.observations.map(observation => this.toFeature(observation))
+            features: this.data.map(observation => this.toFeature(observation))
         }
     }
 

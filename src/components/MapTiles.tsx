@@ -1,9 +1,8 @@
-import {Observation} from "../model/observations";
-import {GoogleMap, InfoWindow, Marker, MarkerF, PolygonF, useLoadScript, OverlayView} from "@react-google-maps/api";
-import {Fragment, useEffect, useState} from "react";
+import {GoogleMap, Marker, PolygonF, OverlayView} from "@react-google-maps/api";
+import {Fragment} from "react";
 import {CustomCalloutWindow} from "./CustomCalloutWindow";
-import {useNavigate} from "react-router";
-
+import {useApiClient} from "../providers/ApiClientProvider";
+import {useMapViewModel} from "../view-models/useMapViewModel";
 
 const verificationToColor: Record<number, string> = {
     0: "#3659e4",
@@ -13,46 +12,24 @@ const verificationToColor: Record<number, string> = {
 }
 
 type props = {
-    observations: Observation[] | null,
-    apiClient: any
+    viewModel: ReturnType<typeof useMapViewModel>
 }
 
 
-export const MapTiles = ({observations, apiClient}: props) => {
-    const navigate = useNavigate();
-
-    const [selectedObservation, setSelectedObservation] = useState<Observation | null>(null);
-
-    const {isLoaded} = useLoadScript({
-        googleMapsApiKey: 'AIzaSyCbAVEkhkMf11mpQXOUFzmyhFCCo_fmu3M'
-    })
-
-    const [activeId, setActiveId] = useState<string | null>(null)
-    const [center, setCenter] = useState<{ lat: number, lng: number }>({
-        lat: 39.7392, lng:
-            -104.9903
-    })
-
-    useEffect(() => {
-        if (!activeId) return
-        if (!observations || observations.length === 0) return
-        const observation = observations.filter((obs) => obs.observationId === activeId)[0]
-        const newCenter = {lat: observation.position.gpsOrigin.latitude, lng: observation.position.gpsOrigin.longitude}
-        setCenter(newCenter)
-    }, [activeId, observations])
-
+export const MapTiles = ({viewModel}: props) => {
 
     return (
         <div className='map-container'>
-            {isLoaded ? (
+            {viewModel.isLoaded ? (
                 <GoogleMap
-                    onClick={() => setActiveId(null)}
-                    onZoomChanged={() => setActiveId(null)} // optional
-                    zoom={13}
-                    center={center}
+                    onLoad={viewModel.handleMapLoad}
+                    onUnmount={viewModel.handleUnmount}
+                    onClick={() => viewModel.setActiveObservation(null)}
+                    onZoomChanged={() => viewModel.setActiveObservation(null)} // optional
+                    zoom={10}
+                    onBoundsChanged={viewModel.updateBoundsCheck}
+                    center={viewModel.center}
                     mapContainerStyle={{
-                        // width: '100%',
-                        // height: '100%',
                         height: '100%',
                         width: '100%',
                     }}
@@ -65,7 +42,7 @@ export const MapTiles = ({observations, apiClient}: props) => {
                         ],
                     }}
                 >
-                    {observations?.map((observation) => {
+                    {viewModel.renderedObservations?.map((observation) => {
                         const origin = observation.position.gpsOrigin;
                         const path =
                             observation.position.coordinates?.map(({latitude, longitude}) => ({
@@ -73,13 +50,11 @@ export const MapTiles = ({observations, apiClient}: props) => {
                                 lng: longitude,
                             })) ?? [];
 
-                        const isOpen = activeId === observation.observationId
                         return (
                             <Fragment key={observation.observationId}>
                                 <Marker position={{lat: origin.latitude, lng: origin.longitude}}
                                         onClick={() => {
-                                            setActiveId(observation.observationId)
-                                            setSelectedObservation(observation)
+                                            viewModel.setActiveObservation(observation)
                                         }}
                                         icon={{
                                             path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
@@ -90,22 +65,6 @@ export const MapTiles = ({observations, apiClient}: props) => {
                                         }}
 
                                 >
-                                    {isOpen && (
-                                        <OverlayView
-                                            position={{lat: origin.latitude, lng: origin.longitude}}
-                                            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
-                                            <div className={"overlay-anchor"}>
-                                                <CustomCalloutWindow observation={observation}
-                                                                     imagePress={() => {
-                                                                         navigate(`/image/${observation.observationId}`, {
-                                                                             state: {image: observation.image}
-                                                                         })
-                                                                     }}
-                                                                     apiClient={apiClient}/>
-
-                                            </div>
-                                        </OverlayView>
-                                    )}
                                 </Marker>
 
                                 {path.length > 1 && (
@@ -116,11 +75,27 @@ export const MapTiles = ({observations, apiClient}: props) => {
                                             strokeColor: "#fa0808",
                                             strokeWeight: 2
                                         }}
+                                        onClick={() => {
+                                            viewModel.setActiveObservation(observation)
+                                        }}
                                     />
                                 )}
                             </Fragment>
                         );
                     })}
+                    {viewModel.activeObservation && <OverlayView
+                        position={{
+                            lat: viewModel.activeObservation.position.gpsOrigin.latitude,
+                            lng: viewModel.activeObservation.position.gpsOrigin.longitude
+                        }}
+                        mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
+                        <div className={"overlay-anchor"}>
+                            <CustomCalloutWindow observation={viewModel.activeObservation}
+                                                 imageClick={viewModel.imageClick}
+                                                 apiClient={viewModel.apiClient}/>
+
+                        </div>
+                    </OverlayView>}
 
                 </GoogleMap>) : <div><p>map not loaded</p></div>}
         </div>

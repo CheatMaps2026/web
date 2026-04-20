@@ -3,8 +3,9 @@ import { signInWithRedirect } from 'aws-amplify/auth';
 
 export const LoginView = () => {
     useEffect(() => {
-        signInWithRedirect();
-    }, []);
+        console.log("Trying redirect...");
+        signInWithRedirect().catch(console.error);
+}, []);
 
     return (
         <div>
