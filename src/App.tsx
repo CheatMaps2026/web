@@ -1,6 +1,6 @@
 import './App.css'
 import {ApiClientProvider} from "./providers/ApiClientProvider";
-import {BrowserRouter, Route, Routes,} from "react-router-dom";
+import { HashRouter, Route, Routes,} from "react-router-dom";
 import {NavBar} from "./components/NavBar";
 import {HomeView} from "./views/HomeView";
 import {CarouselView} from "./views/CarouselView";
@@ -16,7 +16,7 @@ export const App = () => {
     return (
         <ApiClientProvider>
             <ObservationsStoreProvider>
-                <BrowserRouter basename={"/web"}>
+                <HashRouter>
                     <header className="app-header">
                         <NavBar/>
                     </header>
@@ -30,7 +30,7 @@ export const App = () => {
                         <Route path={"/newsletter"} element={<NewsletterView/>}/>
                     </Routes>
                     {/*<Observations/>*/}
-                </BrowserRouter>
+                </HashRouter>
             </ObservationsStoreProvider>
         </ApiClientProvider>
     )
