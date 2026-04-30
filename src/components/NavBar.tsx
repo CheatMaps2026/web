@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import '../App.css';
-import { signOut, signInWithRedirect } from 'aws-amplify/auth';
+import { signInWithRedirect } from 'aws-amplify/auth';
 import { useAuthState } from '../hooks/useAuthState';
 
 const baseItems = [

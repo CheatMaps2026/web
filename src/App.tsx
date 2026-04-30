@@ -15,7 +15,6 @@ import { useEffect } from 'react';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { Hub } from 'aws-amplify/utils';
 import { signInWithRedirect } from 'aws-amplify/auth';
-import { VerifierRoute } from './guards/ProtectedRoute';
 import {ObservationView} from "./views/ObservationView";
 
 export const App = () => {
@@ -30,10 +29,7 @@ export const App = () => {
                     <Routes>
                         <Route path={"/"} element={<HomeView/>}/>
                         <Route path={"/image/:observationId"} element={<FullscreenImage/>}/>
-                        <Route path={"/verification"} element={
-                            <VerifierRoute>
-                                <CarouselView/>
-                            </VerifierRoute>}/>
+                        <Route path={"/verification"} element={<CarouselView/>}/>
                         <Route path={"/observations"} element={<ObservationView/>}/>
                         <Route path={"/map"} element={<MapView/>}/>
                         <Route path={"/contact"} element={<ContactView/>}/>

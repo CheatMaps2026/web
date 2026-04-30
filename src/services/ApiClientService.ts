@@ -27,21 +27,24 @@ export class ApiClientService {
     async get<T>(url: string, params?: unknown): Promise<T> {
         console.log("GET", url)
         try {
-            const res = await this.axios.get<T>(url, {params})
-            console.log("response", res)
+            const session = await fetchAuthSession();
+            const token = session.tokens?.idToken?.toString();
 
             // @ts-ignore
-            return res.data.data
-            // const parsed = JSON.parse(res.data.body)
-            // console.log("parsed response", parsed)
-            // return parsed
-
-
+            const res = await this.axios.get<T>(url, {
+            params,
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        })
+        // @ts-ignore
+        return res.data.data
         } catch (error) {
             const normalizedError = normalizeError(error)
             console.warn("Network error", normalizedError)
             throw normalizedError
         }
+            // const parsed = JSON.parse(res.data.body)
+            // console.log("parsed response", parsed)
+            // return parsed 
     }
 
     async post<T>(url: string, body?: unknown): Promise<T> {

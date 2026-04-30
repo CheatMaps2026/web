@@ -10,8 +10,7 @@ export const useAuthState = (): AuthState => {
         fetchAuthSession()
             .then(session => {
                 if (!session.tokens) { setAuthState('unauthenticated'); return; }
-                const groups = session.tokens.idToken?.payload['cognito:groups'] as string[] | undefined;
-                setAuthState(groups?.includes('Verifiers') ? 'authorized' : 'unauthorized');
+                setAuthState('authorized');
             })
             .catch(() => setAuthState('unauthenticated'));
     }, []);
